@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter) {
@@ -43,4 +44,23 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
 
         Text(text = result.toString(), modifier = modifier)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SalaryIncreasePreview() {
+    SalaryIncrease(presenter = SalaryIncreasePresenter(SalaryIncreaseInteractor()))
+}
+
+@Composable
+fun CurrencyInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+    TextField(
+        value = value.toString(),
+        onValueChange = {
+            onValueChange(it.toDouble())
+        },
+        label = { Text("Current Salary") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        modifier = modifier
+    )
 }
