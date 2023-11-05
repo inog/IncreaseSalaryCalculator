@@ -3,6 +3,8 @@ package de.ingoreschke.increasesalarycalculator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +26,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             IncreaseSalaryCalculatorTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Greeting("Android")
                     CurrentSalary()
@@ -37,14 +38,25 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CurrentSalary(modifier: Modifier = Modifier) {
     var currentSalary by remember { mutableStateOf(65000.00) }
+    var increasePercentage by remember { mutableStateOf(0.0) }
 
-    TextField(
-        value = currentSalary.toString(),
-        onValueChange = { currentSalary = it.toDouble() },
-        label = { Text("Current Salary") },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        modifier = modifier
-    )
+    Column(modifier = modifier) {
+        TextField(
+            value = currentSalary.toString(),
+            onValueChange = { currentSalary = it.toDouble() },
+            label = { Text("Current Salary") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = modifier
+        )
+
+        TextField(
+            value = increasePercentage.toString(),
+            onValueChange = { currentSalary = it.toDouble() },
+            label = { Text("Increase") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = modifier
+        )
+    }
 
 
 }
