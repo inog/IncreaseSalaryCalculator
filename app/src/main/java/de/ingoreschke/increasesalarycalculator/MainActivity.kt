@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -22,13 +21,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import de.ingoreschke.increasesalarycalculator.ui.theme.IncreaseSalaryCalculatorTheme
 
 class MainActivity : ComponentActivity() {
+    private lateinit var presenter: SalaryIncreasePresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        presenter = SalaryIncreasePresenter(SalaryIncreaseInteractor())
+
         setContent {
             IncreaseSalaryCalculatorTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Greeting("Android")
-                    CurrentSalary()
+                    CurrentSalary(presenter = presenter)
                 }
             }
         }
@@ -36,14 +39,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CurrentSalary(modifier: Modifier = Modifier) {
+fun CurrentSalary(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter) {
     var currentSalary by remember { mutableStateOf(65000.00) }
     var increasePercentage by remember { mutableStateOf(0.0) }
+    var result by remember { mutableStateOf(0.0) }
 
     Column(modifier = modifier) {
         TextField(
             value = currentSalary.toString(),
-            onValueChange = { currentSalary = it.toDouble() },
+            onValueChange = {
+                currentSalary = it.toDouble()
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
+            },
             label = { Text("Current Salary") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = modifier
@@ -51,11 +58,16 @@ fun CurrentSalary(modifier: Modifier = Modifier) {
 
         TextField(
             value = increasePercentage.toString(),
-            onValueChange = { currentSalary = it.toDouble() },
+            onValueChange = {
+                increasePercentage = it.toDouble()
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
+            },
             label = { Text("Increase") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = modifier
         )
+
+        Text(text = result.toString())
     }
 
 
@@ -74,6 +86,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     IncreaseSalaryCalculatorTheme {
         Greeting("Android")
-        CurrentSalary()
+        CurrentSalary(presenter = SalaryIncreasePresenter(SalaryIncreaseInteractor()))
     }
 }
