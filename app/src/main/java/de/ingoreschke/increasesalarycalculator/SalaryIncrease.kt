@@ -31,7 +31,6 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
 
 
     Column(modifier = modifier
-        .border(3.dp, MaterialTheme.colorScheme.primary)
         .padding(16.dp)) {
         SalaryInput(
             value = currentSalary,
@@ -83,7 +82,7 @@ fun SalaryInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Do
             onValueChange(it.toDouble())
         },
         label = { Text("Current Salary") },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         trailingIcon = { Text("€") } ,
         modifier = modifier
     )
@@ -97,7 +96,7 @@ fun IncreaseInput(modifier: Modifier = Modifier, value: Double, onValueChange: (
             onValueChange(it.toDouble())
         },
         label = { Text("Increase") },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         trailingIcon = { Text("%") } ,
         modifier = modifier
     )
