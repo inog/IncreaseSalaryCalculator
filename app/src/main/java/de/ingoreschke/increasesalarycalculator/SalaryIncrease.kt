@@ -76,10 +76,13 @@ fun SalaryIncreasePreview() {
 
 @Composable
 fun SalaryInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+    val numberRegex = remember { "[-]?[\\d]*[.]?[\\d]*".toRegex() }
     TextField(
         value = value.toString(),
         onValueChange = {
-            onValueChange(it.toDouble())
+            if (it.isEmpty() || numberRegex.matches(it)) {
+                onValueChange(it.toDouble())
+            }
         },
         label = { Text("Current Salary") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -90,10 +93,13 @@ fun SalaryInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Do
 
 @Composable
 fun IncreaseInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+    val numberRegex = remember { "[-]?[\\d]*[.]?[\\d]*".toRegex() }
     TextField(
         value = value.toString(),
         onValueChange = {
-            onValueChange(it.toDouble())
+            if (it.isEmpty() || numberRegex.matches(it)){
+                onValueChange(it.toDouble())
+            }
         },
         label = { Text("Increase") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
