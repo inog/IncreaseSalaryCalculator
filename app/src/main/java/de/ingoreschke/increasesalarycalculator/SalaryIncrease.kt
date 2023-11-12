@@ -3,10 +3,9 @@ package de.ingoreschke.increasesalarycalculator
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -28,45 +27,45 @@ import androidx.compose.ui.unit.sp
 fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter) {
     var currentSalary by remember { mutableStateOf(65000.00) }
     var increasePercentage by remember { mutableStateOf(0.0) }
-    var result by remember { mutableStateOf(0.0) }
+    var result by remember { mutableStateOf(currentSalary) }
 
 
-    Column(modifier = modifier.padding(16.dp)) {
-        TextField(
-            value = currentSalary.toString(),
+    Column(modifier = modifier
+        .border(3.dp, MaterialTheme.colorScheme.primary)
+        .padding(16.dp)) {
+        SalaryInput(
+            value = currentSalary,
             onValueChange = {
-                currentSalary = it.toDouble()
-                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
-            },
-            label = { Text("Current Salary") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = modifier
-        )
-        TextField(
-            value = increasePercentage.toString(),
-            onValueChange = {
-                increasePercentage = it.toDouble()
-                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
-            },
-            label = { Text("Increase") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = modifier
-        )
-        Slider(
-            value = increasePercentage.toFloat(),
-            valueRange = 0f..20f,
-            onValueChange = {
-                increasePercentage = it.toDouble()
+                currentSalary = it
                 result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
             }, modifier = modifier
-                .border(1.dp, Color.Red)
         )
-        Spacer(modifier = modifier.height(16.dp))
-        Text(text = result.toString(),
-            fontSize = 24.sp,
-            modifier = modifier
-                .border(1.dp, MaterialTheme.colorScheme.primary ))
 
+        IncreaseInput(
+            value = increasePercentage,
+            onValueChange = {
+                increasePercentage = it
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
+            },
+            modifier = modifier
+        )
+
+        IncreaseSlider(
+            value = increasePercentage,
+            onValueChange = {
+                increasePercentage = it
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
+            },
+            modifier = modifier
+        )
+
+        Spacer(modifier = modifier.height(16.dp))
+
+        Text(
+            text = "$result €",
+            fontSize = 48.sp,
+            modifier = modifier.heightIn(min = 48.dp),
+        )
     }
 }
 
@@ -77,7 +76,7 @@ fun SalaryIncreasePreview() {
 }
 
 @Composable
-fun CurrencyInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+fun SalaryInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
     TextField(
         value = value.toString(),
         onValueChange = {
@@ -85,6 +84,32 @@ fun CurrencyInput(modifier: Modifier = Modifier, value: Double, onValueChange: (
         },
         label = { Text("Current Salary") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        trailingIcon = { Text("€") } ,
         modifier = modifier
+    )
+}
+
+@Composable
+fun IncreaseInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+    TextField(
+        value = value.toString(),
+        onValueChange = {
+            onValueChange(it.toDouble())
+        },
+        label = { Text("Increase") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        trailingIcon = { Text("%") } ,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun IncreaseSlider(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+    Slider(
+        value = value.toFloat(),
+        valueRange = 0f..20f,
+        onValueChange = {
+            onValueChange(it.toDouble())
+        }, modifier = modifier.height(96.dp)
     )
 }
