@@ -54,6 +54,7 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
         )
         Slider(
             value = increasePercentage.toFloat(),
+            valueRange = 0f..20f,
             onValueChange = {
                 increasePercentage = it.toDouble()
                 result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
