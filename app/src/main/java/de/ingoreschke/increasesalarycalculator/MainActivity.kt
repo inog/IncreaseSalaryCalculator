@@ -23,8 +23,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             IncreaseSalaryCalculatorTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
-                    SalaryIncrease(presenter = presenter)
+                    Column {
+                        Greeting("Android")
+                        SalaryIncrease(presenter = presenter)
+
+                    }
                 }
             }
         }
