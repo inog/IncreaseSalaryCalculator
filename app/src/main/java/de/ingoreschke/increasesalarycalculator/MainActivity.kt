@@ -34,10 +34,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             IncreaseSalaryCalculatorTheme {
-                Surface(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp) , color = MaterialTheme.colorScheme.background) {
-                    Column {
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    Column(modifier = Modifier.padding(16.dp)) {
                         Intro()
                         Spacer(modifier = Modifier.height(44.dp))
                         SalaryIncrease(presenter = presenter)
