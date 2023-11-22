@@ -11,7 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -52,12 +51,13 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun AdMobBanner(modifier: Modifier = Modifier) {
     AndroidView(
-        modifier = modifier.fillMaxWidth().fillMaxSize(),
+        modifier = modifier
+            .fillMaxWidth(),
         factory = { context ->
             AdView(context).apply {
-                setAdSize(AdSize.BANNER)
+                setAdSize(AdSize.FULL_BANNER)
                 //adUnitId = "ca-app-pub-1283865206002218~7018170650"
-                adUnitId =  "ca-app-pub-3940256099942544/6300978111"
+                adUnitId = "ca-app-pub-3940256099942544/6300978111" // test ad
                 loadAd(AdRequest.Builder().build())
             }
         }
