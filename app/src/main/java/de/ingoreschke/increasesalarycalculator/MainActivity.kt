@@ -4,13 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -28,9 +34,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             IncreaseSalaryCalculatorTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp) , color = MaterialTheme.colorScheme.background) {
                     Column {
-                        Greeting("Android")
+                        Intro()
+                        Spacer(modifier = Modifier.height(44.dp))
                         SalaryIncrease(presenter = presenter)
                         AdMobBanner()
                     }
@@ -41,11 +50,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Intro(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(id = R.string.app_name),
+            fontSize = 24.sp,
+            modifier = modifier
+        )
+        Text(
+            text = stringResource(id = R.string.introtext),
+            fontSize = 16.sp,
+            modifier = modifier
+        )
+        Text(
+            text = stringResource(id = R.string.introtext2),
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
