@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-val NUMBER_REGEX = "[-]?[\\d]*[.]?[\\d]*".toRegex()
+val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
 
 @Composable
 fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter) {
@@ -72,34 +72,41 @@ fun SalaryIncreasePreview() {
 }
 
 @Composable
-fun SalaryInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+fun SalaryInput(modifier: Modifier = Modifier,
+                value: Double,
+                onValueChange: (Double) -> Unit) {
 
     TextField(
-        value = value.toString(),
+        value = if (value == 0.0) "" else value.toString(),
         onValueChange = {
             if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
-                onValueChange(it.toDouble())
+                onValueChange(if (it.isEmpty()) 0.0 else it.toDouble())
             }
         },
         label = { Text("Current Salary") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        placeholder = { Text("65000.37")},
         trailingIcon = { Text("€") },
         modifier = modifier
     )
 }
 
 @Composable
-fun IncreaseInput(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+fun IncreaseInput(modifier: Modifier = Modifier,
+                  value: Double,
+                  onValueChange: (Double) -> Unit) {
     TextField(
-        value = value.toString(),
+        value = if (value == 0.0) "" else value.toString(),
         onValueChange = {
             if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
-                onValueChange(it.toDouble())
+                onValueChange(if (it.isEmpty()) 0.0 else it.toDouble())
             }
         },
         label = { Text("Increase") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        placeholder = { Text("5.4") },
         trailingIcon = { Text("%") },
+        isError = value.toString().isNotEmpty() && !NUMBER_REGEX.matches(value.toString()),
         modifier = modifier
     )
 }
