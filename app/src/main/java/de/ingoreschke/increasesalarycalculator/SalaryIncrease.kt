@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.roundToInt
 
 val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
 
@@ -112,12 +113,16 @@ fun IncreaseInput(modifier: Modifier = Modifier,
 }
 
 @Composable
-fun IncreaseSlider(modifier: Modifier = Modifier, value: Double, onValueChange: (Double) -> Unit) {
+fun IncreaseSlider(modifier: Modifier = Modifier,
+                   value: Double,
+                   onValueChange: (Double) -> Unit) {
     Slider(
         value = value.toFloat(),
         valueRange = 0f..20f,
         onValueChange = {
-            onValueChange(it.toDouble())
-        }, modifier = modifier.height(96.dp)
+
+            val rounded = (it * 10).roundToInt().toDouble() / 10
+            onValueChange(rounded )
+        }, modifier = modifier.height(96.dp),
     )
 }
