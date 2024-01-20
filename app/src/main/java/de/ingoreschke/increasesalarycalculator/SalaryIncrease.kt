@@ -86,7 +86,7 @@ fun SalaryInput(modifier: Modifier = Modifier,
         },
         label = { Text("Current Salary") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        placeholder = { Text("65000.37")},
+        //placeholder = { Text("65000.37")},
         trailingIcon = { Text("€") },
         modifier = modifier
     )
@@ -105,7 +105,7 @@ fun IncreaseInput(modifier: Modifier = Modifier,
         },
         label = { Text("Increase") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        placeholder = { Text("5.4") },
+        //placeholder = { Text("5.4") },
         trailingIcon = { Text("%") },
         isError = value.toString().isNotEmpty() && !NUMBER_REGEX.matches(value.toString()),
         modifier = modifier
