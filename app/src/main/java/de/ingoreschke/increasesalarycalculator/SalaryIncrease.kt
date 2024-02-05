@@ -1,5 +1,6 @@
 package de.ingoreschke.increasesalarycalculator
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,11 +25,11 @@ import kotlin.math.roundToInt
 val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
 
 @Composable
-fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter) {
-    var currentSalary by remember { mutableStateOf(0.0) }
-    var increasePercentage by remember { mutableStateOf(0.0) }
+fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter, lastSalary: Double, lastIncrease: Double) {
+    var currentSalary by remember { mutableStateOf(lastSalary) }
+    var increasePercentage by remember { mutableStateOf(lastIncrease) }
     var result by remember { mutableStateOf(currentSalary) }
-
+    val ctx = LocalContext.current
 
     Column(modifier = modifier) {
         SalaryInput(
@@ -35,6 +37,7 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
             onValueChange = {
                 currentSalary = it
                 result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
+                saveToPrefs(ctx, "last_salary", currentSalary)
             }, modifier = modifier
         )
 
@@ -43,6 +46,7 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
             onValueChange = {
                 increasePercentage = it
                 result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
+                saveToPrefs(ctx, "last_increase", increasePercentage)
             },
             modifier = modifier
         )
@@ -52,6 +56,7 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
             onValueChange = {
                 increasePercentage = it
                 result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
+                saveToPrefs(ctx, "last_increase", increasePercentage)
             },
             modifier = modifier
         )
@@ -69,7 +74,12 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
 @Preview(showBackground = true)
 @Composable
 fun SalaryIncreasePreview() {
-    SalaryIncrease(presenter = SalaryIncreasePresenter(SalaryIncreaseInteractor()))
+    SalaryIncrease(
+        presenter = SalaryIncreasePresenter(SalaryIncreaseInteractor()),
+        lastSalary = 0.0,
+        lastIncrease = 0.0,
+        modifier = Modifier.height(400.dp)
+    )
 }
 
 @Composable
@@ -81,7 +91,10 @@ fun SalaryInput(modifier: Modifier = Modifier,
         value = if (value == 0.0) "" else value.toString(),
         onValueChange = {
             if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
-                onValueChange(if (it.isEmpty()) 0.0 else it.toDouble())
+                onValueChange(
+                    if (it.isEmpty()) 0.0
+                    else it.toDouble()
+                )
             }
         },
         label = { Text("Current Salary") },
@@ -125,4 +138,11 @@ fun IncreaseSlider(modifier: Modifier = Modifier,
             onValueChange(rounded )
         }, modifier = modifier.height(96.dp),
     )
+}
+
+fun saveToPrefs(context: Context, key: String, value: Double) {
+    val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+    val editor = prefs.edit()
+    editor.putFloat(key, value.toFloat())
+    editor.apply()
 }

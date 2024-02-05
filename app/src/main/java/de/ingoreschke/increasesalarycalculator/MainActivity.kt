@@ -1,5 +1,6 @@
 package de.ingoreschke.increasesalarycalculator
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,6 +30,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Get access to shared preferences
+        val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+
+        // Retrieve previously saved values if any
+        val lastSalary = prefs.getFloat("last_salary", 0.0f).toDouble()
+        val lastIncrease = prefs.getFloat("last_increase", 0.0f).toDouble()
+
+
         MobileAds.initialize(this) {}
         presenter = SalaryIncreasePresenter(SalaryIncreaseInteractor())
 
@@ -38,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Intro()
                         Spacer(modifier = Modifier.height(44.dp))
-                        SalaryIncrease(presenter = presenter)
+                        SalaryIncrease(presenter = presenter, lastSalary = lastSalary, lastIncrease = lastIncrease)
                         AdMobBanner()
                     }
                 }
