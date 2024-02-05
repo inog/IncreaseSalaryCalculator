@@ -1,14 +1,14 @@
 package de.ingoreschke.increasesalarycalculator
 
-private const val HUNDRED = 100.0
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class SalaryIncreaseInteractor {
 
-    fun calcIncreasedSalary(startSalary: Double, increasePercentage: Double): Double {
-        var salaryIncrease = startSalary + (startSalary * increasePercentage / HUNDRED)
-        salaryIncrease = Math.round(salaryIncrease * HUNDRED) / HUNDRED
-        return salaryIncrease
+    fun calcIncreasedSalary(startSalary: BigDecimal, increasePercentage: BigDecimal): BigDecimal {
+        val increasedSalary = startSalary.add(startSalary.multiply(increasePercentage).divide(BigDecimal(100)))
+        return increasedSalary.setScale(2, RoundingMode.HALF_UP)
     }
-
 }
+
 

@@ -17,46 +17,46 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.math.BigDecimal
 import kotlin.math.roundToInt
 
 val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
 
 @Composable
-fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter, lastSalary: Double, lastIncrease: Double) {
+fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter, lastSalary: BigDecimal, lastIncrease: BigDecimal) {
     var currentSalary by remember { mutableStateOf(lastSalary) }
     var increasePercentage by remember { mutableStateOf(lastIncrease) }
-    var result by remember { mutableStateOf(currentSalary) }
+    var result by remember { mutableStateOf(currentSalary.toString()) }
     val ctx = LocalContext.current
 
     Column(modifier = modifier) {
         SalaryInput(
-            value = currentSalary,
+            value = currentSalary.toString(),
             onValueChange = {
-                currentSalary = it
-                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
-                saveToPrefs(ctx, "last_salary", currentSalary)
+                currentSalary = BigDecimal(it)
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage).toString()
+                saveToPrefs(ctx, "last_salary", currentSalary.toString())
             }, modifier = modifier
         )
 
         IncreaseInput(
-            value = increasePercentage,
+            value = increasePercentage.toString(),
             onValueChange = {
-                increasePercentage = it
-                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
-                saveToPrefs(ctx, "last_increase", increasePercentage)
+                increasePercentage = BigDecimal(it)
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage).toString()
+                saveToPrefs(ctx, "last_increase", increasePercentage.toString())
             },
             modifier = modifier
         )
 
         IncreaseSlider(
-            value = increasePercentage,
+            value = increasePercentage.toFloat(),
             onValueChange = {
-                increasePercentage = it
-                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
-                saveToPrefs(ctx, "last_increase", increasePercentage)
+                increasePercentage = it.toBigDecimal().setScale(2)
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage).toString()
+                saveToPrefs(ctx, "last_increase", increasePercentage.toString())
             },
             modifier = modifier
         )
@@ -71,30 +71,16 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SalaryIncreasePreview() {
-    SalaryIncrease(
-        presenter = SalaryIncreasePresenter(SalaryIncreaseInteractor()),
-        lastSalary = 0.0,
-        lastIncrease = 0.0,
-        modifier = Modifier.height(400.dp)
-    )
-}
-
 @Composable
 fun SalaryInput(modifier: Modifier = Modifier,
-                value: Double,
-                onValueChange: (Double) -> Unit) {
+                value: String,
+                onValueChange: (String) -> Unit) {
 
     TextField(
-        value = if (value == 0.0) "" else value.toString(),
+        value = value,
         onValueChange = {
             if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
-                onValueChange(
-                    if (it.isEmpty()) 0.0
-                    else it.toDouble()
-                )
+                onValueChange(if (it.isEmpty()) "0" else it)
             }
         },
         label = { Text("Current Salary") },
@@ -107,42 +93,41 @@ fun SalaryInput(modifier: Modifier = Modifier,
 
 @Composable
 fun IncreaseInput(modifier: Modifier = Modifier,
-                  value: Double,
-                  onValueChange: (Double) -> Unit) {
+                  value: String,
+                  onValueChange: (String) -> Unit) {
     TextField(
-        value = if (value == 0.0) "" else value.toString(),
+        value = value,
         onValueChange = {
             if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
-                onValueChange(if (it.isEmpty()) 0.0 else it.toDouble())
+                onValueChange(if (it.isEmpty()) "0" else it)
             }
         },
         label = { Text("Increase") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         //placeholder = { Text("5.4") },
         trailingIcon = { Text("%") },
-        isError = value.toString().isNotEmpty() && !NUMBER_REGEX.matches(value.toString()),
+        isError = value.isNotEmpty() && !NUMBER_REGEX.matches(value),
         modifier = modifier
     )
 }
 
 @Composable
 fun IncreaseSlider(modifier: Modifier = Modifier,
-                   value: Double,
-                   onValueChange: (Double) -> Unit) {
+                   value: Float,
+                   onValueChange: (Float) -> Unit) {
     Slider(
         value = value.toFloat(),
         valueRange = 0f..20f,
         onValueChange = {
-
-            val rounded = (it * 10).roundToInt().toDouble() / 10
+            val rounded = (it * 10).roundToInt().toFloat() / 10
             onValueChange(rounded )
         }, modifier = modifier.height(96.dp),
     )
 }
 
-fun saveToPrefs(context: Context, key: String, value: Double) {
+fun saveToPrefs(context: Context, key: String, value: String) {
     val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     val editor = prefs.edit()
-    editor.putFloat(key, value.toFloat())
+    editor.putString(key, value)
     editor.apply()
 }

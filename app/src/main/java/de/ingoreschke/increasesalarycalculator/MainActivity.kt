@@ -24,6 +24,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import de.ingoreschke.increasesalarycalculator.ui.theme.IncreaseSalaryCalculatorTheme
+import java.math.BigDecimal
 
 class MainActivity : ComponentActivity() {
     private lateinit var presenter: SalaryIncreasePresenter
@@ -35,8 +36,8 @@ class MainActivity : ComponentActivity() {
         val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
         // Retrieve previously saved values if any
-        val lastSalary = prefs.getFloat("last_salary", 0.0f).toDouble()
-        val lastIncrease = prefs.getFloat("last_increase", 0.0f).toDouble()
+        val lastSalary = BigDecimal(prefs.getString("last_salary", "0.0"))
+        val lastIncrease = BigDecimal(prefs.getString("last_increase", "0.0"))
 
 
         MobileAds.initialize(this) {}
