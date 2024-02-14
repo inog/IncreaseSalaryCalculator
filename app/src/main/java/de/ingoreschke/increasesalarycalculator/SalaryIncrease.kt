@@ -1,6 +1,8 @@
 package de.ingoreschke.increasesalarycalculator
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -21,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.math.BigDecimal
 import java.text.NumberFormat
-import java.util.Locale
 import kotlin.math.roundToInt
 
 val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
@@ -32,7 +33,11 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
     var increasePercentage by remember { mutableStateOf(lastIncrease) }
     var result by remember { mutableStateOf(currentSalary) }
     val ctx = LocalContext.current
-    val numberFormat = NumberFormat.getInstance(Locale.GERMANY)
+    val currentLocale = ctx.resources.configuration.locales[0]
+    val numberFormat = NumberFormat.getCurrencyInstance(currentLocale)
+    numberFormat.isGroupingUsed = true
+
+    Log.i(TAG, "NumberFormat: " + numberFormat.currency)
 
     Column(modifier = modifier) {
         SalaryInput(
@@ -68,7 +73,7 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
 
 
         Text(
-            text = "${numberFormat.format(result)} €",
+            text = "${numberFormat.format(result)}",
             fontSize = 48.sp,
             modifier = modifier.heightIn(min = 48.dp),
         )
@@ -88,9 +93,8 @@ fun SalaryInput(modifier: Modifier = Modifier,
             }
         },
         label = { Text("Current Salary") },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        //placeholder = { Text("65000.37")},
         trailingIcon = { Text("€") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         modifier = modifier
     )
 }
