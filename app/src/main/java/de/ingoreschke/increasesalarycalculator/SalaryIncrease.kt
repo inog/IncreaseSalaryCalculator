@@ -20,6 +20,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.Locale
 import kotlin.math.roundToInt
 
 val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
@@ -28,15 +30,16 @@ val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
 fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter, lastSalary: BigDecimal, lastIncrease: BigDecimal) {
     var currentSalary by remember { mutableStateOf(lastSalary) }
     var increasePercentage by remember { mutableStateOf(lastIncrease) }
-    var result by remember { mutableStateOf(currentSalary.toString()) }
+    var result by remember { mutableStateOf(currentSalary) }
     val ctx = LocalContext.current
+    val numberFormat = NumberFormat.getInstance(Locale.GERMANY)
 
     Column(modifier = modifier) {
         SalaryInput(
             value = currentSalary.toString(),
             onValueChange = {
                 currentSalary = BigDecimal(it)
-                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage).toString()
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
                 saveToPrefs(ctx, "last_salary", currentSalary.toString())
             }, modifier = modifier
         )
@@ -45,7 +48,7 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
             value = increasePercentage.toString(),
             onValueChange = {
                 increasePercentage = BigDecimal(it)
-                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage).toString()
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
                 saveToPrefs(ctx, "last_increase", increasePercentage.toString())
             },
             modifier = modifier
@@ -55,7 +58,7 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
             value = increasePercentage.toFloat(),
             onValueChange = {
                 increasePercentage = it.toBigDecimal().setScale(2)
-                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage).toString()
+                result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
                 saveToPrefs(ctx, "last_increase", increasePercentage.toString())
             },
             modifier = modifier
@@ -63,8 +66,9 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
 
         Spacer(modifier = modifier.height(16.dp))
 
+
         Text(
-            text = "$result €",
+            text = "${numberFormat.format(result)} €",
             fontSize = 48.sp,
             modifier = modifier.heightIn(min = 48.dp),
         )
