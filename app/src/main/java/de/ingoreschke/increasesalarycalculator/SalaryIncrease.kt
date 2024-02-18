@@ -27,6 +27,9 @@ import kotlin.math.roundToInt
 
 val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
 
+/**
+ * Main screen of the app
+ */
 @Composable
 fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter, lastSalary: BigDecimal, lastIncrease: BigDecimal) {
     var currentSalary by remember { mutableStateOf(lastSalary) }
@@ -80,10 +83,15 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
     }
 }
 
+/**
+ * Input field for the salary
+ */
 @Composable
-fun SalaryInput(modifier: Modifier = Modifier,
-                value: String,
-                onValueChange: (String) -> Unit) {
+fun SalaryInput(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit
+) {
 
     OutlinedTextField(
         value = value,
@@ -99,10 +107,15 @@ fun SalaryInput(modifier: Modifier = Modifier,
     )
 }
 
+/**
+ * Input field for the increase
+ */
 @Composable
-fun IncreaseInput(modifier: Modifier = Modifier,
-                  value: String,
-                  onValueChange: (String) -> Unit) {
+fun IncreaseInput(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit
+) {
     OutlinedTextField(
         value = value,
         onValueChange = {
@@ -119,20 +132,29 @@ fun IncreaseInput(modifier: Modifier = Modifier,
     )
 }
 
+/**
+ * Slider to adjust the increase
+ */
 @Composable
-fun IncreaseSlider(modifier: Modifier = Modifier,
-                   value: Float,
-                   onValueChange: (Float) -> Unit) {
+fun IncreaseSlider(
+    modifier: Modifier = Modifier,
+    value: Float,
+    onValueChange: (Float) -> Unit
+) {
     Slider(
         value = value.toFloat(),
         valueRange = 0f..20f,
         onValueChange = {
             val rounded = (it * 10).roundToInt().toFloat() / 10
-            onValueChange(rounded )
-        }, modifier = modifier.height(96.dp),
+            onValueChange(rounded)
+        },
+        modifier = modifier.height(96.dp),
     )
 }
 
+/**
+ * Save a value to shared preferences
+ */
 fun saveToPrefs(context: Context, key: String, value: String) {
     val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     val editor = prefs.edit()
