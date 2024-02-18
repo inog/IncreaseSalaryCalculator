@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -85,7 +85,7 @@ fun SalaryInput(modifier: Modifier = Modifier,
                 value: String,
                 onValueChange: (String) -> Unit) {
 
-    TextField(
+    OutlinedTextField(
         value = value,
         onValueChange = {
             if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
@@ -103,7 +103,7 @@ fun SalaryInput(modifier: Modifier = Modifier,
 fun IncreaseInput(modifier: Modifier = Modifier,
                   value: String,
                   onValueChange: (String) -> Unit) {
-    TextField(
+    OutlinedTextField(
         value = value,
         onValueChange = {
             if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
