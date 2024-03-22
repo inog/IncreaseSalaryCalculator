@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.math.BigDecimal
 import java.text.NumberFormat
+import java.util.Currency
 import kotlin.math.roundToInt
 
 val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
@@ -92,7 +93,8 @@ fun SalaryInput(
     value: String,
     onValueChange: (String) -> Unit
 ) {
-
+    val currentLocale = LocalContext.current.resources.configuration.locales[0]
+    val currencySymbol = Currency.getInstance(currentLocale).symbol
     OutlinedTextField(
         value = value,
         onValueChange = {
@@ -101,7 +103,7 @@ fun SalaryInput(
             }
         },
         label = { Text("Current Salary") },
-        trailingIcon = { Text("€") },
+        trailingIcon = { Text(currencySymbol) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         modifier = modifier
     )
