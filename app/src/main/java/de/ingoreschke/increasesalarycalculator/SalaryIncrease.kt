@@ -1,8 +1,6 @@
 package de.ingoreschke.increasesalarycalculator
 
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -32,22 +30,29 @@ val NUMBER_REGEX = "-?\\d*[.]?\\d*".toRegex()
  * Main screen of the app
  */
 @Composable
-fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePresenter, lastSalary: BigDecimal, lastIncrease: BigDecimal) {
+fun SalaryIncrease(
+    modifier: Modifier = Modifier,
+    presenter: SalaryIncreasePresenter,
+    lastSalary: BigDecimal,
+    lastIncrease: BigDecimal
+) {
     var currentSalary by remember { mutableStateOf(lastSalary) }
     var increasePercentage by remember { mutableStateOf(lastIncrease) }
     var result by remember { mutableStateOf(currentSalary) }
-    val ctx = LocalContext.current
-    val currentLocale = ctx.resources.configuration.locales[0]
-    val numberFormat = NumberFormat.getCurrencyInstance(currentLocale)
-    numberFormat.isGroupingUsed = true
 
-    Log.i(TAG, "NumberFormat: " + numberFormat.currency)
+    val ctx = LocalContext.current
+    val currencyFormat = remember(ctx) {
+        NumberFormat.getCurrencyInstance().apply {
+            currency = Currency.getInstance(ctx.resources.configuration.locales[0])
+            isGroupingUsed = true
+        }
+    }
 
     Column(modifier = modifier) {
         SalaryInput(
             value = currentSalary.toString(),
             onValueChange = {
-                currentSalary = BigDecimal(it)
+                currentSalary = it.toBigDecimalOrNull() ?: BigDecimal.ZERO
                 result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
                 saveToPrefs(ctx, "last_salary", currentSalary.toString())
             }, modifier = modifier
@@ -56,7 +61,7 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
         IncreaseInput(
             value = increasePercentage.toString(),
             onValueChange = {
-                increasePercentage = BigDecimal(it)
+                increasePercentage = it.toBigDecimalOrNull() ?: BigDecimal.ZERO
                 result = presenter.calculateSalaryIncrease(currentSalary, increasePercentage)
                 saveToPrefs(ctx, "last_increase", increasePercentage.toString())
             },
@@ -75,9 +80,8 @@ fun SalaryIncrease(modifier: Modifier = Modifier, presenter: SalaryIncreasePrese
 
         Spacer(modifier = modifier.height(16.dp))
 
-
         Text(
-            text = "${numberFormat.format(result)}",
+            text = currencyFormat.format(result),
             fontSize = 48.sp,
             modifier = modifier.heightIn(min = 48.dp),
         )
@@ -93,20 +97,23 @@ fun SalaryInput(
     value: String,
     onValueChange: (String) -> Unit
 ) {
-    val currentLocale = LocalContext.current.resources.configuration.locales[0]
-    val currencySymbol = Currency.getInstance(currentLocale).symbol
     OutlinedTextField(
         value = value,
-        onValueChange = {
-            if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
-                onValueChange(if (it.isEmpty()) "0" else it)
-            }
-        },
+        onValueChange = { onValueChange(it) },
         label = { Text("Current Salary") },
-        trailingIcon = { Text(currencySymbol) },
+        trailingIcon = { CurrencySymbol() },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         modifier = modifier
     )
+}
+
+@Composable
+fun CurrencySymbol() {
+    val ctx = LocalContext.current
+    val currencySymbol = remember(ctx) {
+        Currency.getInstance(ctx.resources.configuration.locales[0]).symbol
+    }
+    Text(currencySymbol)
 }
 
 /**
@@ -120,14 +127,9 @@ fun IncreaseInput(
 ) {
     OutlinedTextField(
         value = value,
-        onValueChange = {
-            if (it.isEmpty() || NUMBER_REGEX.matches(it)) {
-                onValueChange(if (it.isEmpty()) "0" else it)
-            }
-        },
+        onValueChange = { onValueChange(it) },
         label = { Text("Increase") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        //placeholder = { Text("5.4") },
         trailingIcon = { Text("%") },
         isError = value.isNotEmpty() && !NUMBER_REGEX.matches(value),
         modifier = modifier
@@ -158,8 +160,8 @@ fun IncreaseSlider(
  * Save a value to shared preferences
  */
 fun saveToPrefs(context: Context, key: String, value: String) {
-    val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-    val editor = prefs.edit()
-    editor.putString(key, value)
-    editor.apply()
+    context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        .edit()
+        .putString(key, value)
+        .apply()
 }
