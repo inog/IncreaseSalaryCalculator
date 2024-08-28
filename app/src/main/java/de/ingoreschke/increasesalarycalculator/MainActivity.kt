@@ -14,11 +14,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.preference.PreferenceGroup
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -56,6 +59,26 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+fun SettingsScreen() {
+    val preferences = remember { mutableStateOf(mapOf<String, Any>()) }
+
+    PreferenceGroup(title = "Settings") {
+        PreferenceItem(
+            title = "Currency Symbol",
+            summary = preferences.value["currency_symbol"] as? String ?: "$",
+            onClick = {
+                // Handle click event and update preferences
+            }
+        )
+    }
+}
+
+@Composable
+fun PreferenceItem(title: String, summary: String, onClick: () -> Unit) {
+
 }
 
 @Composable
