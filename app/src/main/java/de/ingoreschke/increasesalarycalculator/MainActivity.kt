@@ -62,15 +62,24 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun SettingsScreen() {
-    val preferences = remember { mutableStateOf(mapOf<String, Any>()) }
+fun SettingsScreen(context: Context) {
+    val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+    val currencySymbol = remember { mutableStateOf(prefs.getString("currency_symbol", "$")) }
 
     PreferenceGroup(title = "Settings") {
         PreferenceItem(
             title = "Currency Symbol",
-            summary = preferences.value["currency_symbol"] as? String ?: "$",
+            summary = currencySymbol.value,
             onClick = {
-                // Handle click event and update preferences
+                // Show a dialog or something to get the new value from the user
+                val newValue = "€" // This should be the value entered by the user
+                currencySymbol.value = newValue
+
+                // Save the new value to shared preferences
+                with(prefs.edit()) {
+                    putString("currency_symbol", newValue)
+                    apply()
+                }
             }
         )
     }
@@ -78,8 +87,9 @@ fun SettingsScreen() {
 
 @Composable
 fun PreferenceItem(title: String, summary: String, onClick: () -> Unit) {
-
+    TODO("Not yet implemented")
 }
+
 
 @Composable
 fun Intro(modifier: Modifier = Modifier) {
