@@ -146,7 +146,7 @@ fun IncreaseSlider(
     onValueChange: (Float) -> Unit
 ) {
     Slider(
-        value = value.toFloat(),
+        value = value,
         valueRange = 0f..20f,
         onValueChange = {
             val rounded = (it * 10).roundToInt().toFloat() / 10
