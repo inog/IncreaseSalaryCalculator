@@ -14,14 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.preference.PreferenceGroup
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -59,35 +56,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-
-@Composable
-fun SettingsScreen(context: Context) {
-    val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-    val currencySymbol = remember { mutableStateOf(prefs.getString("currency_symbol", "$")) }
-
-    PreferenceGroup(title = "Settings") {
-        PreferenceItem(
-            title = "Currency Symbol",
-            summary = currencySymbol.value,
-            onClick = {
-                // Show a dialog or something to get the new value from the user
-                val newValue = "€" // This should be the value entered by the user
-                currencySymbol.value = newValue
-
-                // Save the new value to shared preferences
-                with(prefs.edit()) {
-                    putString("currency_symbol", newValue)
-                    apply()
-                }
-            }
-        )
-    }
-}
-
-@Composable
-fun PreferenceItem(title: String, summary: String, onClick: () -> Unit) {
-    TODO("Not yet implemented")
 }
 
 
