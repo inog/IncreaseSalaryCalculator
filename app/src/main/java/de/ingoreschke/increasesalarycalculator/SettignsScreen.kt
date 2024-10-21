@@ -2,6 +2,8 @@ package de.ingoreschke.increasesalarycalculator
 
 // SettingsScreen.kt
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +21,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import de.ingoreschke.increasesalarycalculator.ui.theme.IncreaseSalaryCalculatorTheme
 import java.util.Currency
 import java.util.Locale
 
@@ -34,18 +38,22 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
 
         Text("Währung", style = MaterialTheme.typography.headlineSmall)
 
+        Log.i(TAG, "SettingsScreen: ${Currency.getAvailableCurrencies()}")
+        Currency.getAvailableCurrencies().forEach { currency ->
+            Text("${currency.currencyCode} (${currency.symbol})", style = MaterialTheme.typography.bodyMedium)
+        }
+
         DropdownMenu(
             expanded = false, // Steuerung des Dropdown-Menüs
             onDismissRequest = { /* Schließen-Logik */ }
         ) {
-            Currency.getAvailableCurrencies().forEach {
-//                currency ->
-//                DropdownMenuItem(onClick = {
-//                    selectedCurrency = currency
-//                    viewModel.setCurrency(currency)
-//                }) {
-//                    Text("${currency.currencyCode} (${currency.symbol})")
-//                }
+            Currency.getAvailableCurrencies().forEach { currency ->
+                DropdownMenuItem(onClick = {
+                    selectedCurrency = currency
+                    viewModel.setCurrency(currency)
+                }) {
+                    Text("${currency.currencyCode} (${currency.symbol})")
+                }
             }
         }
 
@@ -77,5 +85,18 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         val amount = 1234.56
         val formattedAmount = viewModel.formatCurrency(amount)
         Text("Beispiel: $formattedAmount")
+    }
+}
+
+@Composable
+fun DropdownMenuItem(onClick: () -> Unit, interactionSource: @Composable () -> Unit) {
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SettingsScreenPreview() {
+    IncreaseSalaryCalculatorTheme {
+        SettingsScreen(SettingsViewModel())
     }
 }
