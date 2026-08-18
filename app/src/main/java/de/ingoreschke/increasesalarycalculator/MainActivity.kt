@@ -4,14 +4,15 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var presenter: SalaryIncreasePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         // Get access to shared preferences
@@ -39,17 +41,24 @@ class MainActivity : ComponentActivity() {
         val lastSalary = BigDecimal(prefs.getString("last_salary", "0.0"))
         val lastIncrease = BigDecimal(prefs.getString("last_increase", "0.0"))
 
-
         MobileAds.initialize(this) {}
         presenter = SalaryIncreasePresenter(SalaryIncreaseInteractor())
 
         setContent {
             IncreaseSalaryCalculatorTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Intro()
-                        Spacer(modifier = Modifier.height(44.dp))
-                        SalaryIncrease(presenter = presenter, lastSalary = lastSalary, lastIncrease = lastIncrease)
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column {
+                            Intro()
+                            Spacer(modifier = Modifier.height(44.dp))
+                            SalaryIncrease(presenter = presenter, lastSalary = lastSalary, lastIncrease = lastIncrease)
+                        }
                         AdMobBanner()
                     }
                 }
