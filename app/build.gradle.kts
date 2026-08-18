@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "de.ingoreschke.increasesalarycalculator"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "de.ingoreschke.increasesalarycalculator"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 4
-        versionName = "1.2.0"
+        targetSdk = 36
+        versionCode = 2400121 //{minSdk}{00}{3 digits Version epic.major.minor} i.e. 2400121
+        versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
