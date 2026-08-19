@@ -87,5 +87,5 @@ versionCode = {minSdk}{00}{3 digits Version epic.major.minor}
 
 - **Developer**: Ingo Reschke
 - **Privacy Policy**: [privacypolicy.html](website/privacypolicy.html)
-- **Contact**: `kontakt [ at ] isc.ingo-reschke.de`
+- **Contact**: `isc [ at ] ingo-reschke.de`
 
