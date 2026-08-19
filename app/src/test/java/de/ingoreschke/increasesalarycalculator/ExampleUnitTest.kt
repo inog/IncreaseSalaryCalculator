@@ -1,17 +1,17 @@
 package de.ingoreschke.increasesalarycalculator
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.math.BigDecimal
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ExampleUnitTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun legacyPresenterAndInteractor_calculateCorrectly() {
+        val interactor = SalaryIncreaseInteractor()
+        val presenter = SalaryIncreasePresenter(interactor)
+
+        val result = presenter.calculateSalaryIncrease(BigDecimal("3000.00"), BigDecimal("10.0"))
+        assertEquals(BigDecimal("3300.00"), result)
     }
 }

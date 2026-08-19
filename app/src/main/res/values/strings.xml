@@ -1,6 +1,51 @@
 <resources>
     <string name="app_name">IncreaseSalaryCalculator</string>
 
-    <string name="introtext">This app will help you to calculate your salary increase.</string>
-    <string name="introtext2">Please enter your current salary and the percentage of increase.</string>
+    <string name="introtext">Calculate your salary increase quickly and accurately.</string>
+    <string name="introtext2">Enter your current salary and desired percentage or target salary.</string>
+
+    <!-- Calculation Modes -->
+    <string name="tab_standard">Percentage</string>
+    <string name="tab_target">Target Salary</string>
+
+    <!-- Periods -->
+    <string name="period_monthly">Monthly</string>
+    <string name="period_annual">Annual</string>
+
+    <!-- Labels & Inputs -->
+    <string name="label_current_salary">Current Salary</string>
+    <string name="label_increase_percentage">Increase Percentage</string>
+    <string name="label_target_salary">Desired Target Salary</string>
+    <string name="label_calculated_increase">Required Increase</string>
+    <string name="label_result_salary">New Salary</string>
+    <string name="label_difference">Increase Amount</string>
+    <string name="label_difference_annual">Annual Difference</string>
+    <string name="label_difference_monthly">Monthly Difference</string>
+    <string name="label_presets">Quick Presets</string>
+    <string name="label_overview">Calculation Overview</string>
+    <string name="label_gross_note">* All figures are gross salary calculations.</string>
+
+    <!-- Actions & Buttons -->
+    <string name="action_share">Share</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_info">Tips &amp; Info</string>
+    <string name="action_close">Close</string>
+    <string name="clear_input">Clear input</string>
+    <string name="copied_to_clipboard">Result copied to clipboard!</string>
+
+    <!-- Share Text -->
+    <string name="share_title">Salary Increase Calculation</string>
+    <string name="share_text">📊 Salary Increase Calculation:\n• Base Salary: %1$s (%2$s)\n• Increase: +%3$s%%\n• New Salary: %4$s (%2$s)\n• Difference: +%5$s (%2$s) / +%6$s (Yearly)</string>
+
+    <!-- Negotiation Tips -->
+    <string name="dialog_info_title">Salary Negotiation Tips</string>
+    <string name="tip_1_title">1. Know Your Market Value</string>
+    <string name="tip_1_desc">Research standard salaries in your industry and region for your level of experience before entering negotiations.</string>
+    <string name="tip_2_title">2. Quantify Your Achievements</string>
+    <string name="tip_2_desc">Highlight measurable successes, completed projects, added responsibilities, and revenue growth you brought to the team.</string>
+    <string name="tip_3_title">3. Define an Anchor &amp; Alternatives</string>
+    <string name="tip_3_desc">Start with a well-reasoned upper target. If direct base salary is capped, negotiate bonuses, mobility budget, home office days, or training allowances.</string>
+    <string name="tip_4_title">4. Focus on Future Value</string>
+    <string name="tip_4_desc">Explain how you plan to contribute to the company\'s future goals and take on higher-impact challenges.</string>
 </resources>

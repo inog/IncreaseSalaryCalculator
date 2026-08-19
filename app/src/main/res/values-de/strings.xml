@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Gehaltserhöhung Rechner</string>
+
+    <string name="introtext">Berechne deine Gehaltserhöhung schnell, präzise und übersichtlich.</string>
+    <string name="introtext2">Gib dein aktuelles Gehalt und den Prozentsatz oder dein Wunschgehalt ein.</string>
+
+    <!-- Calculation Modes -->
+    <string name="tab_standard">Prozentual</string>
+    <string name="tab_target">Zielgehalt</string>
+
+    <!-- Periods -->
+    <string name="period_monthly">Monatlich</string>
+    <string name="period_annual">Jährlich</string>
+
+    <!-- Labels & Inputs -->
+    <string name="label_current_salary">Aktuelles Gehalt</string>
+    <string name="label_increase_percentage">Erhöhung in Prozent</string>
+    <string name="label_target_salary">Gewünschtes Zielgehalt</string>
+    <string name="label_calculated_increase">Benötigte Erhöhung</string>
+    <string name="label_result_salary">Neues Gehalt</string>
+    <string name="label_difference">Erhöhungsbetrag</string>
+    <string name="label_difference_annual">Jährliches Plus</string>
+    <string name="label_difference_monthly">Monatliches Plus</string>
+    <string name="label_presets">Schnellauswahl</string>
+    <string name="label_overview">Berechnungsübersicht</string>
+    <string name="label_gross_note">* Alle Angaben beziehen sich auf Bruttobeträge.</string>
+
+    <!-- Actions & Buttons -->
+    <string name="action_share">Teilen</string>
+    <string name="action_copy">Kopieren</string>
+    <string name="action_reset">Zurücksetzen</string>
+    <string name="action_info">Tipps &amp; Info</string>
+    <string name="action_close">Schließen</string>
+    <string name="clear_input">Eingabe löschen</string>
+    <string name="copied_to_clipboard">Ergebnis in die Zwischenablage kopiert!</string>
+
+    <!-- Share Text -->
+    <string name="share_title">Gehaltserhöhung Berechnung</string>
+    <string name="share_text">📊 Gehaltserhöhung Berechnung:\n• Bisheriges Gehalt: %1$s (%2$s)\n• Erhöhung: +%3$s%%\n• Neues Gehalt: %4$s (%2$s)\n• Differenz: +%5$s (%2$s) / +%6$s (pro Jahr)</string>
+
+    <!-- Negotiation Tips -->
+    <string name="dialog_info_title">Tipps für die Gehaltsverhandlung</string>
+    <string name="tip_1_title">1. Kenne deinen Marktwert</string>
+    <string name="tip_1_desc">Informiere dich im Vorfeld über branchen- und positionsübliche Gehälter in deiner Region für deinen Erfahrungsgrad.</string>
+    <string name="tip_2_title">2. Erfolge messbar belegen</string>
+    <string name="tip_2_desc">Führe konkrete Erfolge, abgeschlossene Projekte, übernommene Verantwortung und Mehrwerte für das Unternehmen an.</string>
+    <string name="tip_3_title">3. Anker setzen &amp; Alternativen prüfen</string>
+    <string name="tip_3_desc">Starte mit einer gut begründeten Forderung. Wenn das Grundgehalt fixiert ist: Boni, Weiterbildungsbudget, Mobilitätszuschuss oder Homeoffice verhandeln.</string>
+    <string name="tip_4_title">4. Zukünftigen Mehrwert aufzeigen</string>
+    <string name="tip_4_desc">Mache deutlich, welche Ziele und Verantwortungen du in den kommenden 12 Monaten für das Team anpacken wirst.</string>
+</resources>
