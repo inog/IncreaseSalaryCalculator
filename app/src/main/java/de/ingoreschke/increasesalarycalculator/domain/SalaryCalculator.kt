@@ -1,11 +1,13 @@
 package de.ingoreschke.increasesalarycalculator.domain
 
+import de.ingoreschke.increasesalarycalculator.data.CurrencyOption
 import de.ingoreschke.increasesalarycalculator.data.SalaryCalculationResult
 import de.ingoreschke.increasesalarycalculator.data.SalaryPeriod
 import de.ingoreschke.increasesalarycalculator.data.TargetCalculationResult
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
+import java.util.Currency
 import java.util.Locale
 
 object SalaryCalculator {
@@ -142,16 +144,37 @@ object SalaryCalculator {
     }
 
     /**
-     * Formats a BigDecimal to localized currency string.
+     * Formats a BigDecimal to localized currency string according to selected CurrencyOption.
      */
-    fun formatCurrency(amount: BigDecimal, locale: Locale = Locale.getDefault()): String {
+    fun formatCurrency(
+        amount: BigDecimal,
+        currencyCode: String = CurrencyOption.CODE_AUTO,
+        deviceLocale: Locale = Locale.getDefault()
+    ): String {
         return try {
-            val format = NumberFormat.getCurrencyInstance(locale)
+            val option = CurrencyOption.getByCode(currencyCode, deviceLocale)
+            val formatLocale = option.locale ?: deviceLocale
+            val format = NumberFormat.getCurrencyInstance(formatLocale)
+            if (option.code != CurrencyOption.CODE_AUTO) {
+                try {
+                    format.currency = Currency.getInstance(option.code)
+                } catch (_: Exception) {}
+            }
             format.format(amount)
         } catch (_: Exception) {
             val format = NumberFormat.getCurrencyInstance(Locale.GERMANY)
             format.format(amount)
         }
+    }
+
+    /**
+     * Gets the display symbol for a selected currency code.
+     */
+    fun getCurrencySymbol(
+        currencyCode: String = CurrencyOption.CODE_AUTO,
+        deviceLocale: Locale = Locale.getDefault()
+    ): String {
+        return CurrencyOption.getByCode(currencyCode, deviceLocale).symbol
     }
 
     /**

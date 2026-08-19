@@ -56,12 +56,12 @@ import de.ingoreschke.increasesalarycalculator.data.CalculationMode
 import de.ingoreschke.increasesalarycalculator.data.SalaryPeriod
 import de.ingoreschke.increasesalarycalculator.domain.SalaryCalculator
 import de.ingoreschke.increasesalarycalculator.ui.components.AdMobAdaptiveBanner
+import de.ingoreschke.increasesalarycalculator.ui.components.CurrencySelectionDialog
 import de.ingoreschke.increasesalarycalculator.ui.components.NegotiationTipsDialog
 import de.ingoreschke.increasesalarycalculator.ui.components.QuickPresetChips
 import de.ingoreschke.increasesalarycalculator.ui.components.SalaryResultCard
 import de.ingoreschke.increasesalarycalculator.ui.components.SalaryTopAppBar
 import kotlinx.coroutines.launch
-import java.util.Currency
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,13 +77,7 @@ fun SalaryScreen(
     val scope = rememberCoroutineScope()
     val locale = context.resources.configuration.locales[0]
 
-    val currencySymbol = remember(locale) {
-        try {
-            Currency.getInstance(locale).symbol
-        } catch (_: Exception) {
-            "€"
-        }
-    }
+    val currencySymbol = SalaryCalculator.getCurrencySymbol(state.selectedCurrencyCode, locale)
 
     val copyResult = {
         val shareText = when (state.calculationMode) {
@@ -92,12 +86,12 @@ fun SalaryScreen(
                 if (res != null) {
                     context.getString(
                         R.string.share_text,
-                        SalaryCalculator.formatCurrency(res.baseSalary, locale),
+                        SalaryCalculator.formatCurrency(res.baseSalary, state.selectedCurrencyCode, locale),
                         if (res.period == SalaryPeriod.MONTHLY) context.getString(R.string.period_monthly) else context.getString(R.string.period_annual),
                         SalaryCalculator.formatPercentage(res.increasePercentage, locale),
-                        SalaryCalculator.formatCurrency(res.newSalary, locale),
-                        SalaryCalculator.formatCurrency(res.difference, locale),
-                        SalaryCalculator.formatCurrency(res.annualDifference, locale)
+                        SalaryCalculator.formatCurrency(res.newSalary, state.selectedCurrencyCode, locale),
+                        SalaryCalculator.formatCurrency(res.difference, state.selectedCurrencyCode, locale),
+                        SalaryCalculator.formatCurrency(res.annualDifference, state.selectedCurrencyCode, locale)
                     )
                 } else ""
             }
@@ -106,12 +100,12 @@ fun SalaryScreen(
                 if (res != null) {
                     context.getString(
                         R.string.share_text,
-                        SalaryCalculator.formatCurrency(res.baseSalary, locale),
+                        SalaryCalculator.formatCurrency(res.baseSalary, state.selectedCurrencyCode, locale),
                         if (res.period == SalaryPeriod.MONTHLY) context.getString(R.string.period_monthly) else context.getString(R.string.period_annual),
                         SalaryCalculator.formatPercentage(res.requiredPercentage, locale),
-                        SalaryCalculator.formatCurrency(res.targetSalary, locale),
-                        SalaryCalculator.formatCurrency(res.difference, locale),
-                        SalaryCalculator.formatCurrency(res.annualDifference, locale)
+                        SalaryCalculator.formatCurrency(res.targetSalary, state.selectedCurrencyCode, locale),
+                        SalaryCalculator.formatCurrency(res.difference, state.selectedCurrencyCode, locale),
+                        SalaryCalculator.formatCurrency(res.annualDifference, state.selectedCurrencyCode, locale)
                     )
                 } else ""
             }
@@ -134,12 +128,12 @@ fun SalaryScreen(
                 if (res != null) {
                     context.getString(
                         R.string.share_text,
-                        SalaryCalculator.formatCurrency(res.baseSalary, locale),
+                        SalaryCalculator.formatCurrency(res.baseSalary, state.selectedCurrencyCode, locale),
                         if (res.period == SalaryPeriod.MONTHLY) context.getString(R.string.period_monthly) else context.getString(R.string.period_annual),
                         SalaryCalculator.formatPercentage(res.increasePercentage, locale),
-                        SalaryCalculator.formatCurrency(res.newSalary, locale),
-                        SalaryCalculator.formatCurrency(res.difference, locale),
-                        SalaryCalculator.formatCurrency(res.annualDifference, locale)
+                        SalaryCalculator.formatCurrency(res.newSalary, state.selectedCurrencyCode, locale),
+                        SalaryCalculator.formatCurrency(res.difference, state.selectedCurrencyCode, locale),
+                        SalaryCalculator.formatCurrency(res.annualDifference, state.selectedCurrencyCode, locale)
                     )
                 } else ""
             }
@@ -148,12 +142,12 @@ fun SalaryScreen(
                 if (res != null) {
                     context.getString(
                         R.string.share_text,
-                        SalaryCalculator.formatCurrency(res.baseSalary, locale),
+                        SalaryCalculator.formatCurrency(res.baseSalary, state.selectedCurrencyCode, locale),
                         if (res.period == SalaryPeriod.MONTHLY) context.getString(R.string.period_monthly) else context.getString(R.string.period_annual),
                         SalaryCalculator.formatPercentage(res.requiredPercentage, locale),
-                        SalaryCalculator.formatCurrency(res.targetSalary, locale),
-                        SalaryCalculator.formatCurrency(res.difference, locale),
-                        SalaryCalculator.formatCurrency(res.annualDifference, locale)
+                        SalaryCalculator.formatCurrency(res.targetSalary, state.selectedCurrencyCode, locale),
+                        SalaryCalculator.formatCurrency(res.difference, state.selectedCurrencyCode, locale),
+                        SalaryCalculator.formatCurrency(res.annualDifference, state.selectedCurrencyCode, locale)
                     )
                 } else ""
             }
@@ -180,6 +174,7 @@ fun SalaryScreen(
             },
         topBar = {
             SalaryTopAppBar(
+                onCurrencyClick = { viewModel.toggleCurrencyDialog(true) },
                 onInfoClick = { viewModel.toggleInfoDialog(true) },
                 onResetClick = { viewModel.onReset() },
                 onShareClick = { shareResult() }
@@ -222,31 +217,42 @@ fun SalaryScreen(
                     }
                 }
 
-                // Period Switch (Monatlich vs Jährlich)
+                // Period Switch (Monatlich vs Jährlich) & Currency Chip
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     FilterChip(
-                        selected = state.selectedPeriod == SalaryPeriod.MONTHLY,
-                        onClick = { viewModel.onPeriodChanged(SalaryPeriod.MONTHLY) },
-                        label = { Text(stringResource(id = R.string.period_monthly)) },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
+                        selected = false,
+                        onClick = { viewModel.toggleCurrencyDialog(true) },
+                        label = { Text(currencySymbol, fontWeight = FontWeight.Bold) }
                     )
-                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-                    FilterChip(
-                        selected = state.selectedPeriod == SalaryPeriod.ANNUAL,
-                        onClick = { viewModel.onPeriodChanged(SalaryPeriod.ANNUAL) },
-                        label = { Text(stringResource(id = R.string.period_annual)) },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
+
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        FilterChip(
+                            selected = state.selectedPeriod == SalaryPeriod.MONTHLY,
+                            onClick = { viewModel.onPeriodChanged(SalaryPeriod.MONTHLY) },
+                            label = { Text(stringResource(id = R.string.period_monthly)) },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
                         )
-                    )
+                        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                        FilterChip(
+                            selected = state.selectedPeriod == SalaryPeriod.ANNUAL,
+                            onClick = { viewModel.onPeriodChanged(SalaryPeriod.ANNUAL) },
+                            label = { Text(stringResource(id = R.string.period_annual)) },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        )
+                    }
                 }
 
                 // Current Salary Input
@@ -264,7 +270,12 @@ fun SalaryScreen(
                                     )
                                 }
                             }
-                            Text(currencySymbol, modifier = Modifier.padding(end = 12.dp))
+                            Text(
+                                text = currencySymbol,
+                                modifier = Modifier
+                                    .padding(end = 12.dp)
+                                    .clickable { viewModel.toggleCurrencyDialog(true) }
+                            )
                         }
                     },
                     isError = !state.isSalaryValid,
@@ -352,7 +363,12 @@ fun SalaryScreen(
                                         )
                                     }
                                 }
-                                Text(currencySymbol, modifier = Modifier.padding(end = 12.dp))
+                                Text(
+                                    text = currencySymbol,
+                                    modifier = Modifier
+                                        .padding(end = 12.dp)
+                                        .clickable { viewModel.toggleCurrencyDialog(true) }
+                                )
                             }
                         },
                         isError = !state.isTargetSalaryValid,
@@ -374,6 +390,7 @@ fun SalaryScreen(
                 // Result Card
                 SalaryResultCard(
                     mode = state.calculationMode,
+                    currencyCode = state.selectedCurrencyCode,
                     percentageResult = state.percentageResult,
                     targetResult = state.targetResult,
                     onCopyClick = { copyResult() }
@@ -400,6 +417,15 @@ fun SalaryScreen(
         if (state.showInfoDialog) {
             NegotiationTipsDialog(
                 onDismissRequest = { viewModel.toggleInfoDialog(false) }
+            )
+        }
+
+        // Currency Selection Dialog
+        if (state.showCurrencyDialog) {
+            CurrencySelectionDialog(
+                selectedCurrencyCode = state.selectedCurrencyCode,
+                onCurrencySelected = { viewModel.onCurrencySelected(it) },
+                onDismissRequest = { viewModel.toggleCurrencyDialog(false) }
             )
         }
     }

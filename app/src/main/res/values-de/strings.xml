@@ -26,6 +26,7 @@
     <string name="label_gross_note">* Alle Angaben beziehen sich auf Bruttobeträge.</string>
 
     <!-- Actions & Buttons -->
+    <string name="action_currency">Währung auswählen</string>
     <string name="action_share">Teilen</string>
     <string name="action_copy">Kopieren</string>
     <string name="action_reset">Zurücksetzen</string>
@@ -33,6 +34,9 @@
     <string name="action_close">Schließen</string>
     <string name="clear_input">Eingabe löschen</string>
     <string name="copied_to_clipboard">Ergebnis in die Zwischenablage kopiert!</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_currency_title">Währung auswählen</string>
 
     <!-- Share Text -->
     <string name="share_title">Gehaltserhöhung Berechnung</string>

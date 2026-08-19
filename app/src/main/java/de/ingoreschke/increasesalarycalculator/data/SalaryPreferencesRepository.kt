@@ -18,6 +18,7 @@ interface SalaryPreferencesRepository {
     suspend fun updateTargetSalary(targetSalary: String)
     suspend fun updatePeriod(period: SalaryPeriod)
     suspend fun updateMode(mode: CalculationMode)
+    suspend fun updateCurrency(currencyCode: String)
     suspend fun reset()
 }
 
@@ -26,7 +27,8 @@ data class SalaryUserPreferences(
     val lastPercentage: String = "5.0",
     val lastTargetSalary: String = "3850.00",
     val period: SalaryPeriod = SalaryPeriod.MONTHLY,
-    val mode: CalculationMode = CalculationMode.PERCENTAGE
+    val mode: CalculationMode = CalculationMode.PERCENTAGE,
+    val currencyCode: String = CurrencyOption.CODE_AUTO
 )
 
 class DataStoreSalaryPreferencesRepository(
@@ -39,11 +41,11 @@ class DataStoreSalaryPreferencesRepository(
         val LAST_TARGET_SALARY = stringPreferencesKey("last_target_salary")
         val PERIOD = stringPreferencesKey("salary_period")
         val MODE = stringPreferencesKey("calculation_mode")
+        val CURRENCY = stringPreferencesKey("selected_currency")
     }
 
     override val userPreferencesFlow: Flow<SalaryUserPreferences> =
         context.salaryDataStore.data.map { preferences ->
-            // Migration check from legacy SharedPreferences if DataStore is empty
             val legacyPrefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
             val legacySalary = legacyPrefs.getString("last_salary", null)
             val legacyIncrease = legacyPrefs.getString("last_increase", null)
@@ -64,12 +66,15 @@ class DataStoreSalaryPreferencesRepository(
                 try { CalculationMode.valueOf(it) } catch (_: Exception) { CalculationMode.PERCENTAGE }
             } ?: CalculationMode.PERCENTAGE
 
+            val currency = preferences[PreferencesKeys.CURRENCY] ?: CurrencyOption.CODE_AUTO
+
             SalaryUserPreferences(
                 lastSalary = salary,
                 lastPercentage = percentage,
                 lastTargetSalary = targetSalary,
                 period = period,
-                mode = mode
+                mode = mode,
+                currencyCode = currency
             )
         }
 
@@ -93,6 +98,10 @@ class DataStoreSalaryPreferencesRepository(
         context.salaryDataStore.edit { it[PreferencesKeys.MODE] = mode.name }
     }
 
+    override suspend fun updateCurrency(currencyCode: String) {
+        context.salaryDataStore.edit { it[PreferencesKeys.CURRENCY] = currencyCode }
+    }
+
     override suspend fun reset() {
         context.salaryDataStore.edit {
             it[PreferencesKeys.LAST_SALARY] = "0.0"
@@ -100,6 +109,7 @@ class DataStoreSalaryPreferencesRepository(
             it[PreferencesKeys.LAST_TARGET_SALARY] = "0.0"
             it[PreferencesKeys.PERIOD] = SalaryPeriod.MONTHLY.name
             it[PreferencesKeys.MODE] = CalculationMode.PERCENTAGE.name
+            it[PreferencesKeys.CURRENCY] = CurrencyOption.CODE_AUTO
         }
     }
 }

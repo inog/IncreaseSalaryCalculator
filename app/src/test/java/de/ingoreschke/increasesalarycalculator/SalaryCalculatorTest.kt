@@ -1,5 +1,6 @@
 package de.ingoreschke.increasesalarycalculator
 
+import de.ingoreschke.increasesalarycalculator.data.CurrencyOption
 import de.ingoreschke.increasesalarycalculator.data.SalaryPeriod
 import de.ingoreschke.increasesalarycalculator.domain.SalaryCalculator
 import org.junit.Assert.assertEquals
@@ -116,14 +117,30 @@ class SalaryCalculatorTest {
     }
 
     @Test
-    fun formatCurrency_formatsWithoutCrashing() {
-        val formattedGerman = SalaryCalculator.formatCurrency(BigDecimal("1234.50"), Locale.GERMANY)
-        assertNotNull(formattedGerman)
-        assertTrue(formattedGerman.contains("1.234,50") || formattedGerman.contains("1234,50"))
+    fun formatCurrency_withCustomCurrencies_formatsAppropriately() {
+        val amount = BigDecimal("1234.50")
+        
+        val eurFormat = SalaryCalculator.formatCurrency(amount, CurrencyOption.CODE_EUR, Locale.GERMANY)
+        assertTrue(eurFormat.contains("1.234,50") || eurFormat.contains("1234,50"))
+        assertTrue(eurFormat.contains("€"))
 
-        val formattedUS = SalaryCalculator.formatCurrency(BigDecimal("1234.50"), Locale.US)
-        assertNotNull(formattedUS)
-        assertTrue(formattedUS.contains("1,234.50") || formattedUS.contains("$"))
+        val usdFormat = SalaryCalculator.formatCurrency(amount, CurrencyOption.CODE_USD, Locale.US)
+        assertTrue(usdFormat.contains("1,234.50") || usdFormat.contains("1234.50"))
+        assertTrue(usdFormat.contains("$"))
+
+        val gbpFormat = SalaryCalculator.formatCurrency(amount, CurrencyOption.CODE_GBP, Locale.UK)
+        assertTrue(gbpFormat.contains("£"))
+
+        val chfFormat = SalaryCalculator.formatCurrency(amount, CurrencyOption.CODE_CHF, Locale.GERMANY)
+        assertTrue(chfFormat.contains("CHF"))
+    }
+
+    @Test
+    fun getCurrencySymbol_returnsExpectedSymbols() {
+        assertEquals("€", SalaryCalculator.getCurrencySymbol(CurrencyOption.CODE_EUR, Locale.GERMANY))
+        assertEquals("$", SalaryCalculator.getCurrencySymbol(CurrencyOption.CODE_USD, Locale.US))
+        assertEquals("£", SalaryCalculator.getCurrencySymbol(CurrencyOption.CODE_GBP, Locale.UK))
+        assertEquals("CHF", SalaryCalculator.getCurrencySymbol(CurrencyOption.CODE_CHF, Locale.GERMANY))
     }
 
     @Test

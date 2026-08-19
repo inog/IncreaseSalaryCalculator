@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import de.ingoreschke.increasesalarycalculator.data.CalculationMode
+import de.ingoreschke.increasesalarycalculator.data.CurrencyOption
 import de.ingoreschke.increasesalarycalculator.data.SalaryPeriod
 import de.ingoreschke.increasesalarycalculator.data.SalaryPreferencesRepository
 import de.ingoreschke.increasesalarycalculator.domain.SalaryCalculator
@@ -40,6 +41,7 @@ class SalaryViewModel(
             val targetSalary = prefs.lastTargetSalary
             val period = prefs.period
             val mode = prefs.mode
+            val currency = prefs.currencyCode
 
             val parsedSalary = SalaryCalculator.parseToBigDecimal(salary) ?: BigDecimal("3500.00")
             val parsedPercentage = SalaryCalculator.parseToBigDecimal(percentage) ?: BigDecimal("5.0")
@@ -65,6 +67,7 @@ class SalaryViewModel(
                     sliderPercentage = parsedPercentage.toFloat().coerceIn(0f, 50f),
                     selectedPeriod = period,
                     calculationMode = mode,
+                    selectedCurrencyCode = currency,
                     percentageResult = percentageResult,
                     targetResult = targetResult,
                     isLoaded = true
@@ -214,6 +217,18 @@ class SalaryViewModel(
         }
     }
 
+    fun onCurrencySelected(currencyCode: String) {
+        _uiState.update {
+            it.copy(
+                selectedCurrencyCode = currencyCode,
+                showCurrencyDialog = false
+            )
+        }
+        viewModelScope.launch {
+            repository.updateCurrency(currencyCode)
+        }
+    }
+
     fun onReset() {
         _uiState.update { current ->
             current.copy(
@@ -235,6 +250,10 @@ class SalaryViewModel(
 
     fun toggleInfoDialog(show: Boolean) {
         _uiState.update { it.copy(showInfoDialog = show) }
+    }
+
+    fun toggleCurrencyDialog(show: Boolean) {
+        _uiState.update { it.copy(showCurrencyDialog = show) }
     }
 
     private fun debouncedSave() {

@@ -1,6 +1,7 @@
 package de.ingoreschke.increasesalarycalculator.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Share
@@ -21,6 +22,7 @@ import de.ingoreschke.increasesalarycalculator.R
 @Composable
 fun SalaryTopAppBar(
     modifier: Modifier = Modifier,
+    onCurrencyClick: () -> Unit,
     onInfoClick: () -> Unit,
     onResetClick: () -> Unit,
     onShareClick: () -> Unit
@@ -35,6 +37,12 @@ fun SalaryTopAppBar(
             )
         },
         actions = {
+            IconButton(onClick = onCurrencyClick) {
+                Icon(
+                    imageVector = Icons.Default.CurrencyExchange,
+                    contentDescription = stringResource(id = R.string.action_currency)
+                )
+            }
             IconButton(onClick = onShareClick) {
                 Icon(
                     imageVector = Icons.Default.Share,

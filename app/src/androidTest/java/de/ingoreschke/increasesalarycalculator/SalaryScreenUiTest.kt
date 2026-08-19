@@ -34,6 +34,7 @@ class SalaryScreenUiTest {
             override suspend fun updateTargetSalary(targetSalary: String) {}
             override suspend fun updatePeriod(period: SalaryPeriod) {}
             override suspend fun updateMode(mode: CalculationMode) {}
+            override suspend fun updateCurrency(currencyCode: String) {}
             override suspend fun reset() {}
         }
         val viewModel = SalaryViewModel(fakeRepo)

@@ -26,6 +26,7 @@
     <string name="label_gross_note">* All figures are gross salary calculations.</string>
 
     <!-- Actions & Buttons -->
+    <string name="action_currency">Select Currency</string>
     <string name="action_share">Share</string>
     <string name="action_copy">Copy</string>
     <string name="action_reset">Reset</string>
@@ -33,6 +34,9 @@
     <string name="action_close">Close</string>
     <string name="clear_input">Clear input</string>
     <string name="copied_to_clipboard">Result copied to clipboard!</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_currency_title">Select Currency</string>
 
     <!-- Share Text -->
     <string name="share_title">Salary Increase Calculation</string>

@@ -1,6 +1,7 @@
 package de.ingoreschke.increasesalarycalculator
 
 import de.ingoreschke.increasesalarycalculator.data.CalculationMode
+import de.ingoreschke.increasesalarycalculator.data.CurrencyOption
 import de.ingoreschke.increasesalarycalculator.data.SalaryPeriod
 import de.ingoreschke.increasesalarycalculator.data.SalaryPreferencesRepository
 import de.ingoreschke.increasesalarycalculator.data.SalaryUserPreferences
@@ -53,6 +54,7 @@ class SalaryViewModelTest {
         assertEquals(5.0f, state.sliderPercentage)
         assertEquals(SalaryPeriod.MONTHLY, state.selectedPeriod)
         assertEquals(CalculationMode.PERCENTAGE, state.calculationMode)
+        assertEquals(CurrencyOption.CODE_AUTO, state.selectedCurrencyCode)
         assertNotNull(state.percentageResult)
         assertEquals(BigDecimal("3675.00"), state.percentageResult?.newSalary)
     }
@@ -139,6 +141,17 @@ class SalaryViewModelTest {
     }
 
     @Test
+    fun onCurrencySelected_updatesCurrencyAndPersists() = runTest {
+        advanceUntilIdle()
+        viewModel.onCurrencySelected(CurrencyOption.CODE_EUR)
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertEquals(CurrencyOption.CODE_EUR, state.selectedCurrencyCode)
+        assertFalse(state.showCurrencyDialog)
+    }
+
+    @Test
     fun onReset_clearsState() = runTest {
         advanceUntilIdle()
         viewModel.onReset()
@@ -151,15 +164,19 @@ class SalaryViewModelTest {
     }
 
     @Test
-    fun toggleInfoDialog_updatesDialogVisibility() = runTest {
+    fun toggleDialogs_updatesVisibility() = runTest {
         advanceUntilIdle()
         assertFalse(viewModel.uiState.value.showInfoDialog)
+        assertFalse(viewModel.uiState.value.showCurrencyDialog)
 
         viewModel.toggleInfoDialog(true)
         assertTrue(viewModel.uiState.value.showInfoDialog)
 
-        viewModel.toggleInfoDialog(false)
-        assertFalse(viewModel.uiState.value.showInfoDialog)
+        viewModel.toggleCurrencyDialog(true)
+        assertTrue(viewModel.uiState.value.showCurrencyDialog)
+
+        viewModel.toggleCurrencyDialog(false)
+        assertFalse(viewModel.uiState.value.showCurrencyDialog)
     }
 }
 
@@ -188,11 +205,16 @@ class FakeSalaryPreferencesRepository : SalaryPreferencesRepository {
         preferencesFlow.value = preferencesFlow.value.copy(mode = mode)
     }
 
+    override suspend fun updateCurrency(currencyCode: String) {
+        preferencesFlow.value = preferencesFlow.value.copy(currencyCode = currencyCode)
+    }
+
     override suspend fun reset() {
         preferencesFlow.value = SalaryUserPreferences(
             lastSalary = "0.0",
             lastPercentage = "0.0",
-            lastTargetSalary = "0.0"
+            lastTargetSalary = "0.0",
+            currencyCode = CurrencyOption.CODE_AUTO
         )
     }
 }

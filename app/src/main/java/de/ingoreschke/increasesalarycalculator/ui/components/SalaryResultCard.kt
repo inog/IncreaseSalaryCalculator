@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.ingoreschke.increasesalarycalculator.R
 import de.ingoreschke.increasesalarycalculator.data.CalculationMode
+import de.ingoreschke.increasesalarycalculator.data.CurrencyOption
 import de.ingoreschke.increasesalarycalculator.data.SalaryCalculationResult
 import de.ingoreschke.increasesalarycalculator.data.SalaryPeriod
 import de.ingoreschke.increasesalarycalculator.data.TargetCalculationResult
@@ -41,6 +42,7 @@ import java.math.BigDecimal
 fun SalaryResultCard(
     modifier: Modifier = Modifier,
     mode: CalculationMode,
+    currencyCode: String = CurrencyOption.CODE_AUTO,
     percentageResult: SalaryCalculationResult?,
     targetResult: TargetCalculationResult?,
     onCopyClick: () -> Unit
@@ -80,7 +82,7 @@ fun SalaryResultCard(
                     }
 
                     AnimatedContent(
-                        targetState = SalaryCalculator.formatCurrency(result.newSalary, locale),
+                        targetState = SalaryCalculator.formatCurrency(result.newSalary, currencyCode, locale),
                         transitionSpec = { fadeIn() togetherWith fadeOut() },
                         label = "NewSalaryAnimation"
                     ) { formattedSalary ->
@@ -101,7 +103,7 @@ fun SalaryResultCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         val sign = if (result.difference >= BigDecimal.ZERO) "+" else ""
-                        val diffText = "$sign${SalaryCalculator.formatCurrency(result.difference, locale)}"
+                        val diffText = "$sign${SalaryCalculator.formatCurrency(result.difference, currencyCode, locale)}"
                         
                         SuggestionChip(
                             onClick = {},
@@ -129,7 +131,7 @@ fun SalaryResultCard(
                         } else {
                             stringResource(id = R.string.label_difference_annual)
                         },
-                        value = "+${SalaryCalculator.formatCurrency(result.difference, locale)}"
+                        value = "+${SalaryCalculator.formatCurrency(result.difference, currencyCode, locale)}"
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
@@ -141,9 +143,9 @@ fun SalaryResultCard(
                             stringResource(id = R.string.label_difference_monthly)
                         },
                         value = if (result.period == SalaryPeriod.MONTHLY) {
-                            "+${SalaryCalculator.formatCurrency(result.annualDifference, locale)}"
+                            "+${SalaryCalculator.formatCurrency(result.annualDifference, currencyCode, locale)}"
                         } else {
-                            "+${SalaryCalculator.formatCurrency(result.monthlyDifference, locale)}"
+                            "+${SalaryCalculator.formatCurrency(result.monthlyDifference, currencyCode, locale)}"
                         }
                     )
                 }
@@ -189,7 +191,7 @@ fun SalaryResultCard(
 
                     Spacer(modifier = Modifier.height(6.dp))
 
-                    val diffText = "$sign${SalaryCalculator.formatCurrency(result.difference, locale)}"
+                    val diffText = "$sign${SalaryCalculator.formatCurrency(result.difference, currencyCode, locale)}"
                     SuggestionChip(
                         onClick = {},
                         label = { Text(diffText, fontWeight = FontWeight.SemiBold) },
@@ -205,14 +207,14 @@ fun SalaryResultCard(
 
                     DetailRow(
                         label = stringResource(id = R.string.label_difference_annual),
-                        value = "$sign${SalaryCalculator.formatCurrency(result.annualDifference, locale)}"
+                        value = "$sign${SalaryCalculator.formatCurrency(result.annualDifference, currencyCode, locale)}"
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
 
                     DetailRow(
                         label = stringResource(id = R.string.label_difference_monthly),
-                        value = "$sign${SalaryCalculator.formatCurrency(result.monthlyDifference, locale)}"
+                        value = "$sign${SalaryCalculator.formatCurrency(result.monthlyDifference, currencyCode, locale)}"
                     )
                 }
             }
