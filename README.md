@@ -25,14 +25,17 @@
 - **UI Framework**: Jetpack Compose (Compose BOM `2024.10.01` with Kotlin Compose Compiler Plugin)
 - **Design System**: Material 3 (`androidx.compose.material3`)
 - **Java Version**: JDK 17
-- **Version**: 1.2.1 (`versionCode: 2400121`)
+- **Version**: 1.3.0 (`versionCode: 2400130`)
 
 ### Key Dependencies
 - AndroidX Core KTX (`1.15.0`)
 - AndroidX Activity Compose (`1.9.3`)
+- AndroidX Lifecycle ViewModel Compose (`2.8.7`)
+- AndroidX DataStore Preferences (`1.1.2`)
 - Jetpack Compose BOM (`2024.10.01`)
 - Google Play Services Ads (`23.6.0`)
-- JUnit 4 & AndroidX Test Runner / Espresso
+- Google User Messaging Platform UMP (`3.1.0`)
+- JUnit 4, Kotlinx Coroutines Test & Espresso
 
 ---
 
@@ -42,7 +45,7 @@ This project follows the **SSWR** versioning scheme:
 ```text
 versionCode = {minSdk}{00}{3 digits Version epic.major.minor}
 ```
-* Example: `minSdk = 24`, `versionName = "1.2.1"` $\rightarrow$ `versionCode = 2400121`
+* Example: `minSdk = 24`, `versionName = "1.3.0"` $\rightarrow$ `versionCode = 2400130`
 
 ---
 
@@ -66,12 +69,17 @@ versionCode = {minSdk}{00}{3 digits Version epic.major.minor}
 
 ## Release Notes
 
-### Version 1.2.1 (versionCode: 2400121)
-- **Target SDK 36 (Android 16)**: Full support and optimization for Android 15 & 16.
-- **Edge-to-Edge Display**: Modernized UI layout with edge-to-edge rendering and safe window insets padding.
-- **Stack Modernization**: Upgraded to Kotlin 2.0.21, official Kotlin Compose Compiler plugin, and Compose BOM 2024.10.01.
-- **Dependency & Performance Updates**: Updated Google Mobile Ads SDK and AndroidX libraries.
-- **Standardized Versioning**: Adopted structured `{minSdk}{00}{version}` version code pattern.
+### Version 1.3.0 (versionCode: 2400130)
+- **Currency Switcher**: Choose your preferred currency (EUR, USD, GBP, CHF, JPY, CAD, AUD, PLN, SEK, or Auto).
+- **Target Salary Calculator (Reverse Mode)**: Calculate required percentage increase from base salary to a desired target.
+- **Monthly / Annual Toggle**: Instant period breakdown (monthly difference vs. annual difference).
+- **Quick Preset Chips**: Fast percentage selection (+2%, +3%, +5%, +7.5%, +10%, +15%, +20%) with haptic feedback.
+- **Material 3 Redesign**: Enhanced result card, smooth animated numbers, and expanded slider (0–50%).
+- **Share & Copy Actions**: Easily copy results to clipboard or share via Android ShareSheet.
+- **Negotiation Tips Dialog**: Built-in actionable tips for salary negotiation preparation.
+- **Modern Architecture**: Full MVVM with ViewModel, StateFlow, and Jetpack DataStore persistence.
+- **Full German & English Localization**: German translations and locale-aware comma/dot decimal input support.
+- **GDPR & Performance**: Integrated Google UMP consent management and R8 release minification.
 
 ---
 

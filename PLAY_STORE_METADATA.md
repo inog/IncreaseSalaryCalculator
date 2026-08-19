@@ -1,6 +1,6 @@
 # Google Play Store Listing — IncreaseSalaryCalculator
 
-Dieses Dokument enthält die aktuellen Texte und Metadaten für den Google Play Console Store-Eintrag der IncreaseSalaryCalculator App (**Version 1.2.1**, `versionCode: 2400121`, `applicationId: de.ingoreschke.increasesalarycalculator`).
+Dieses Dokument enthält die aktuellen Texte und Metadaten für den Google Play Console Store-Eintrag der IncreaseSalaryCalculator App (**Version 1.3.0**, `versionCode: 2400130`, `applicationId: de.ingoreschke.increasesalarycalculator`).
 
 ---
 
@@ -14,33 +14,38 @@ Dieses Dokument enthält die aktuellen Texte und Metadaten für den Google Play 
 
 * **Kurzbeschreibung (max. 80 Zeichen):**
   ```text
-  Berechne deine Gehaltserhöhung prozentual und absolut schnell & präzise.
+  Berechne Gehaltserhöhungen & Wunschgehälter schnell, präzise und übersichtlich.
   ```
 
 * **Vollständige Beschreibung (max. 4000 Zeichen):**
   ```text
-  Du möchtest wissen, wie viel mehr Gehalt dir nach der nächsten Gehaltserhöhung zusteht?
+  Du möchtest wissen, wie viel mehr Gehalt dir nach der nächsten Gehaltserhöhung zusteht oder welches Wunschgehalt du verhandeln musst?
 
-  Der Gehaltserhöhungs-Rechner (IncreaseSalaryCalculator) ist dein schnelles und zuverlässiges Werkzeug für Gehaltsverhandlungen und Lohnanpassungen.
+  Der Gehaltserhöhungs-Rechner (IncreaseSalaryCalculator) ist dein schnelles, präzises und zuverlässiges Werkzeug für Gehaltsverhandlungen, Lohnanpassungen und Tarifwechsel.
 
   Was bietet die App?
   ✔️ Exakte Berechnung: Nutzt kaufmännische Dezimalberechnung (BigDecimal) für maximale Rechengenauigkeit ohne Rundungsfehler
-  ✔️ Intuitive Bedienung: Prozentuale Erhöhung blitzschnell über Schieberegler oder direktes Eingabefeld festlegen
-  ✔️ Automatische Währungserkennung: Berücksichtigt lokale Währungssymbole und Zahlenformate
-  ✔️ Zuverlässige Speicherung: Zuletzt eingegebenes Gehalt und Prozentsatz werden für die nächste Nutzung lokal gespeichert
-  ✔️ Modernes Design: Zeitgemäßes Material 3 Design mit dynamischer Farbunterstützung
-  ✔️ 100% Datenschutz: Deine Gehaltsdaten bleiben ausschließlich lokal auf deinem Gerät
+  ✔️ Prozentuale & Zielgehalt-Berechnung: Berechne entweder das neue Gehalt über einen Prozentsatz oder die benötigte prozentuale Steigerung für dein Zielgehalt (Rückwärts-Rechner)
+  ✔️ Flexible Währungsauswahl: Wähle frei zwischen Euro (€), US-Dollar ($), Britischem Pfund (£), Schweizer Franken (CHF), Yen (¥) und weiteren Währungen oder nutze die automatische Systemerkennung
+  ✔️ Monats- & Jahresansicht: Vergleiche mit einem Fingertipp das Monats- und Jahresplus
+  ✔️ Schnellauswahl & Schieberegler: Wähle gängige Schritte (+2%, +3%, +5%, +7.5%, +10%, +15%, +20%) oder passe den Regler stufenlos an
+  ✔️ Tipps für Gehaltsverhandlungen: Integrierter Leitfaden für eine erfolgreiche Vorbereitung auf das Mitarbeitergespräch
+  ✔️ Teilen & Kopieren: Kopiere deine Berechnungsergebnisse blitzschnell oder teile sie direkt
+  ✔️ Modernes Material 3 Design: Vollständige Edge-to-Edge-Unterstützung mit dynamischen Themes
+  ✔️ 100% Datenschutz: Deine Gehaltsdaten bleiben ausschließlich lokal auf deinem Gerät gespeichert (Jetpack DataStore)
 
   Egal ob Vorbereitung auf das Mitarbeitergespräch oder Tarifanpassung – berechne dein neues Gehalt mit wenigen Fingertipps!
   ```
 
 ### Release Notes / Neu in dieser Version (max. 500 Zeichen)
 ```text
-Neu in Version 1.2.1:
-• Volle Unterstützung und Optimierung für Android 15 & 16 (Target SDK 36)
-• Modernisiertes Edge-to-Edge Design mit verbesserter Bildschirmausnutzung
-• Aktualisierter technischer Unterbau (Jetpack Compose & Kotlin 2.0)
-• Stabilitäts- und Performanceverbesserungen
+Neu in Version 1.3.0:
+• Währungsauswahl: Wähle zwischen Euro, Dollar, CHF, Pfund u.v.m.
+• Zielgehalts-Rechner: Berechne benötigte %-Erhöhungen für dein Wunschgehalt
+• Monats- & Jahresumschalter mit sofortiger Aufschlüsselung
+• Schnellauswahl-Chips (+2% bis +20%) & erweiterter Schieberegler
+• Verhandlungstipps-Dialog & Teilen-Funktion
+• Neues Material 3 Design & optimiertes MVVM/DataStore Backend
 ```
 
 ---
@@ -55,33 +60,38 @@ Neu in Version 1.2.1:
 
 * **Short description (max 80 chars):**
   ```text
-  Calculate your salary increase quickly, accurately, and easily.
+  Calculate salary increases & target pay quickly, accurately, and easily.
   ```
 
 * **Full description (max 4000 chars):**
   ```text
-  Want to know how much your salary will increase after your next raise?
+  Want to know how much your salary will increase after your next raise, or what percentage you need to reach your target salary?
 
-  IncreaseSalaryCalculator is your fast, accurate, and easy-to-use salary raise calculator.
+  IncreaseSalaryCalculator is your fast, accurate, and easy-to-use salary raise and negotiation companion.
 
   Features:
   ✔️ High Precision: Powered by BigDecimal arithmetic to ensure 100% accuracy without rounding errors
-  ✔️ Intuitive Controls: Adjust your increase percentage smoothly with a slider or enter exact values directly
-  ✔️ Locale & Currency Aware: Formats numbers and currency symbols automatically according to your device locale
-  ✔️ Remembers Your Data: Automatically saves your last salary and percentage for quick future calculations
-  ✔️ Modern UI: Built with Jetpack Compose, Material 3, and full Edge-to-Edge display support
-  ✔️ 100% Privacy: All calculation data stays exclusively on your device
+  ✔️ Percentage & Target Salary Modes: Calculate either your new salary from a percentage raise or find the exact percentage required to hit your target salary
+  ✔️ Multi-Currency Support: Easily switch between Euro (€), US Dollar ($), British Pound (£), Swiss Franc (CHF), Japanese Yen (¥), and more, or use automatic device locale
+  ✔️ Monthly & Annual Breakdown: Toggle between monthly and annual figures with full financial impact overview
+  ✔️ Quick Presets & Smooth Slider: One-tap presets (+2%, +3%, +5%, +7.5%, +10%, +15%, +20%) and smooth 0–50% slider
+  ✔️ Salary Negotiation Tips: Built-in actionable guide to prepare for your performance review
+  ✔️ Easy Share & Copy: Copy calculations directly to clipboard or share via Android ShareSheet
+  ✔️ Modern Material 3 UI: Edge-to-Edge display with dynamic theming and haptic feedback
+  ✔️ 100% Privacy: All calculation data stays strictly on your device (Jetpack DataStore)
 
-  Get prepared for your next salary negotiation with ease!
+  Get fully prepared for your next salary negotiation with ease!
   ```
 
 ### Release Notes / What's New (max 500 chars)
 ```text
-What's new in version 1.2.1:
-• Full support and optimization for Android 15 & 16 (Target SDK 36)
-• Modernized Edge-to-Edge display layout
-• Upgraded underlying tech stack (Jetpack Compose & Kotlin 2.0)
-• Stability and performance optimizations
+What's new in version 1.3.0:
+• Currency selector: Switch between EUR, USD, GBP, CHF, JPY, and more
+• Target salary reverse calculator: Find required % increase
+• Monthly / Annual toggle with instant financial breakdown
+• Quick preset chips (+2% to +20%) & expanded slider
+• Salary negotiation tips dialog & share/copy actions
+• Modern Material 3 redesign & Jetpack DataStore architecture
 ```
 
 ---
@@ -90,5 +100,6 @@ What's new in version 1.2.1:
 
 * **Datenschutzerklärung:** [`website/privacypolicy.html`](website/privacypolicy.html)
 * **Data Safety:**
-  - Gespeicherte Daten: Letzter Gehaltswert und Prozentsatz (nur lokal im privaten App-Speicher via `SharedPreferences`).
+  - Gespeicherte Daten: Letzter Gehaltswert, Prozentsatz und Währungsauswahl (ausschließlich lokal im privaten App-Speicher via `Jetpack DataStore`).
   - Keine Übertragung von Nutzer- oder Gehaltsdaten an externe Server.
+

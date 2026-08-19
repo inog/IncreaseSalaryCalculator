@@ -12,8 +12,8 @@ android {
         applicationId = "de.ingoreschke.increasesalarycalculator"
         minSdk = 24
         targetSdk = 36
-        versionCode = 2400121 //{minSdk}{00}{3 digits Version epic.major.minor} i.e. 2400121
-        versionName = "1.2.1"
+        versionCode = 2400130 //{minSdk}{00}{3 digits Version epic.major.minor} i.e. 2400130
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
