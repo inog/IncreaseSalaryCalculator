@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Increase Salary Calculator - Android App</title>
+    <meta name="description" content="IncreaseSalaryCalculator – Fast, accurate salary raise and target pay calculator for Android with multi-currency support and negotiation tips.">
+    <meta name="keywords" content="Salary Increase Calculator, Pay Raise Calculator, Target Salary, Salary Negotiation, Android App">
+    <meta name="theme-color" content="#059669">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="img/icon.png" type="image/png">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="container">
+            <nav class="nav-wrapper" aria-label="Main Navigation">
+                <a href="index-en.html" class="brand">
+                    <img src="img/icon.png" alt="Increase Salary Calculator App Icon" class="brand-icon" width="44" height="44">
+                    <div class="brand-title">
+                        <span class="brand-name">Increase Salary Calculator</span>
+                        <span class="brand-subtitle">Fast &amp; Accurate Pay Raise Estimator</span>
+                    </div>
+                </a>
+                <div class="header-actions">
+                    <div class="lang-switch" role="group" aria-label="Language Selector">
+                        <a href="index.html" title="Zur deutschen Version">DE</a>
+                        <a href="index-en.html" class="active" aria-current="page">EN</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <span>Android App • Version 1.3.0</span>
+                        </div>
+                        <h1>Calculate Salary Increases &amp; Target Pay Accurately</h1>
+                        <p class="lead">
+                            Get fully prepared for your next performance review or contract negotiation. Calculate exact percentage salary raises, monthly or annual financial impact, or find the exact percentage required to hit your target salary.
+                        </p>
+                        
+                        <div class="download-cta-box">
+                            <div class="cta-buttons">
+                                <a href="https://play.google.com/store/apps/details?id=de.ingoreschke.increasesalarycalculator" target="_blank" rel="noopener noreferrer" class="play-badge-link" id="hero-play-button">
+                                    <svg class="play-badge-svg" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M47.1 27.2C44.5 35.6 43 45.4 43 56.6v398.8c0 11.2 1.5 21 4.1 29.4l228.6-228.6L47.1 27.2z" fill="#00E676"/>
+                                        <path d="M352.5 163.6L275.7 256.2l76.8 92.6 86.8-50.1c16.3-9.4 16.3-24.8 0-34.2l-86.8-50.9z" fill="#FFD600"/>
+                                        <path d="M47.1 27.2c6.9-4.8 16.2-7.2 27.6-.6l277.8 137-76.8 92.6L47.1 27.2z" fill="#00B0FF"/>
+                                        <path d="M275.7 256.2l76.8 92.6-277.8 137c-11.4 6.6-20.7 4.2-27.6-.6l228.6-229z" fill="#FF3D00"/>
+                                    </svg>
+                                    <div class="play-badge-text">
+                                        <span class="play-badge-subtitle">GET IT ON</span>
+                                        <span class="play-badge-title">Google Play</span>
+                                    </div>
+                                </a>
+                                <span class="cta-note">Free for Android on Google Play</span>
+                            </div>
+
+                            <div class="cta-qr">
+                                <img src="img/qr_code_isc.png" alt="QR Code for Google Play Store download" width="95" height="95">
+                                <div class="cta-qr-label">Scan QR Code</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Live Preview Mockup -->
+                    <div class="hero-visual">
+                        <div class="interactive-mockup" aria-label="Interactive App Preview">
+                            <div class="mockup-header">
+                                <div class="mockup-app-title">
+                                    <span>💵</span> Salary Calculator
+                                </div>
+                                <div class="mockup-currency-badge" id="demo-curr-label">USD ($)</div>
+                            </div>
+
+                            <div class="mockup-input-group">
+                                <label class="mockup-label" for="demo-base">Current Salary</label>
+                                <div class="mockup-input-field">
+                                    <input type="number" id="demo-base" value="5000" min="0" step="100" aria-label="Base salary">
+                                    <span>$</span>
+                                </div>
+                            </div>
+
+                            <div class="mockup-input-group">
+                                <label class="mockup-label" for="demo-pct">Raise: <strong id="demo-pct-val">8.0%</strong></label>
+                                <input type="range" id="demo-pct" min="0" max="30" step="0.5" value="8" class="mockup-slider" aria-label="Percentage slider">
+                                <div class="mockup-chips">
+                                    <button type="button" class="mockup-chip" onclick="setPreset(3)">+3%</button>
+                                    <button type="button" class="mockup-chip" onclick="setPreset(5)">+5%</button>
+                                    <button type="button" class="mockup-chip active" onclick="setPreset(8)">+8%</button>
+                                    <button type="button" class="mockup-chip" onclick="setPreset(12)">+12%</button>
+                                </div>
+                            </div>
+
+                            <div class="mockup-result-card">
+                                <div class="mockup-result-row">
+                                    <span class="mockup-result-label">New Salary:</span>
+                                    <span class="mockup-result-value" id="demo-res-new">$5,400.00</span>
+                                </div>
+                                <div class="mockup-result-row">
+                                    <span class="mockup-result-label">Net Difference:</span>
+                                    <span class="mockup-result-diff" id="demo-res-diff">+$400.00 / month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section section-alt" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Features at a Glance</h2>
+                    <p>Everything you need for precise financial calculations and negotiation readiness.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                <line x1="6" y1="12" x2="10" y2="12"></line>
+                                <line x1="8" y1="10" x2="8" y2="14"></line>
+                                <line x1="15" y1="10" x2="15" y2="10.01"></line>
+                                <line x1="18" y1="14" x2="18" y2="14.01"></line>
+                            </svg>
+                        </div>
+                        <h3>High Decimal Precision</h3>
+                        <p>Powered by <code>BigDecimal</code> arithmetic with half-up rounding to guarantee 100% accuracy without floating-point inaccuracies.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M16 12l-4-4-4 4M12 16V9"></path>
+                            </svg>
+                        </div>
+                        <h3>Target Salary Reverse Mode</h3>
+                        <p>Enter your dream salary and instantly discover the exact percentage raise required to reach your target during negotiations.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                        <h3>Multi-Currency Support</h3>
+                        <p>Seamlessly switch between US Dollar ($), Euro (€), British Pound (£), Swiss Franc (CHF), Yen (¥), and many more.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <h3>Monthly &amp; Annual Breakdown</h3>
+                        <p>Toggle effortlessly between monthly paychecks and total annual compensation to understand the full financial impact.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                        </div>
+                        <h3>Negotiation Strategies</h3>
+                        <p>Built-in actionable guide packed with practical tips and timing recommendations for your annual performance review.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <h3>100% Offline &amp; Private</h3>
+                        <p>No accounts or remote database syncs. All inputs and calculations are securely kept within your device sandbox.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculation Modes Comparison -->
+        <section class="section" id="modes">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Two Smart Calculation Modes</h2>
+                    <p>Whether you have a percentage offer or a specific target in mind, choose the angle that fits best.</p>
+                </div>
+
+                <div class="modes-grid">
+                    <div class="mode-card">
+                        <span class="mode-badge">Standard Mode</span>
+                        <h3>Percentage Raise</h3>
+                        <p>Ideal when standard percentage increments are offered by your employer or union agreements.</p>
+                        <ul>
+                            <li>Enter current base salary</li>
+                            <li>Select percentage via smooth slider or quick presets (+2% to +20%)</li>
+                            <li>View new monthly and annual earnings instantly</li>
+                        </ul>
+                    </div>
+
+                    <div class="mode-card">
+                        <span class="mode-badge">Target Salary Mode</span>
+                        <h3>Desired Target (Reverse)</h3>
+                        <p>Perfect for negotiation planning: determine the exact raise percentage to request.</p>
+                        <ul>
+                            <li>Enter current salary and desired target figure</li>
+                            <li>Calculates the exact required percentage raise</li>
+                            <li>Provides full clarity on total additional income</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download CTA Section -->
+        <section class="container" id="download">
+            <div class="download-section">
+                <div class="download-inner">
+                    <div class="download-content">
+                        <h2>Download Increase Salary Calculator Now</h2>
+                        <p>Available for free on Google Play. Start planning your next salary increase in seconds.</p>
+                        <div class="download-actions">
+                            <a href="https://play.google.com/store/apps/details?id=de.ingoreschke.increasesalarycalculator" target="_blank" rel="noopener noreferrer" class="play-badge-link" id="footer-play-button">
+                                <svg class="play-badge-svg" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M47.1 27.2C44.5 35.6 43 45.4 43 56.6v398.8c0 11.2 1.5 21 4.1 29.4l228.6-228.6L47.1 27.2z" fill="#00E676"/>
+                                    <path d="M352.5 163.6L275.7 256.2l76.8 92.6 86.8-50.1c16.3-9.4 16.3-24.8 0-34.2l-86.8-50.9z" fill="#FFD600"/>
+                                    <path d="M47.1 27.2c6.9-4.8 16.2-7.2 27.6-.6l277.8 137-76.8 92.6L47.1 27.2z" fill="#00B0FF"/>
+                                    <path d="M275.7 256.2l76.8 92.6-277.8 137c-11.4 6.6-20.7 4.2-27.6-.6l228.6-229z" fill="#FF3D00"/>
+                                </svg>
+                                <div class="play-badge-text">
+                                    <span class="play-badge-subtitle">GET IT ON</span>
+                                    <span class="play-badge-title">Google Play</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="download-qr-box">
+                        <img src="img/qr_code_isc.png" alt="QR code to download IncreaseSalaryCalculator" width="140" height="140">
+                        <span>Scan QR Code to download</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-copy">
+                    &copy; 2026 Ingo Reschke • IncreaseSalaryCalculator
+                </div>
+                <div class="footer-links">
+                    <a href="https://ingo-reschke.de/" target="_blank" rel="noopener noreferrer">Developer's Homepage</a>
+                    <a href="privacypolicy.html">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Demo Script -->
+    <script>
+        const baseInput = document.getElementById('demo-base');
+        const pctInput = document.getElementById('demo-pct');
+        const pctLabel = document.getElementById('demo-pct-val');
+        const resNew = document.getElementById('demo-res-new');
+        const resDiff = document.getElementById('demo-res-diff');
+        const chips = document.querySelectorAll('.mockup-chip');
+
+        function formatCurrency(val) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+        }
+
+        function updateCalc() {
+            const base = parseFloat(baseInput.value) || 0;
+            const pct = parseFloat(pctInput.value) || 0;
+            pctLabel.textContent = pct.toFixed(1) + '%';
+            
+            const diff = base * (pct / 100);
+            const total = base + diff;
+
+            resNew.textContent = formatCurrency(total);
+            resDiff.textContent = '+' + formatCurrency(diff) + ' / month';
+        }
+
+        function setPreset(val) {
+            pctInput.value = val;
+            chips.forEach(chip => {
+                chip.classList.toggle('active', chip.textContent.includes(val + '%'));
+            });
+            updateCalc();
+        }
+
+        baseInput.addEventListener('input', updateCalc);
+        pctInput.addEventListener('input', () => {
+            chips.forEach(chip => chip.classList.remove('active'));
+            updateCalc();
+        });
+
+        updateCalc();
+    </script>
+
+</body>
+</html>

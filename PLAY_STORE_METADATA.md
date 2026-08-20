@@ -98,7 +98,8 @@ What's new in version 1.3.0:
 
 ## 🔒 Datenschutz & Sicherheit
 
-* **Datenschutzerklärung:** [`website/privacypolicy.html`](website/privacypolicy.html)
+* **Datenschutzerklärung URL:** `https://apps.ingoreschke.de/increasesalarycalculator/privacy.html` (im Repository: [`website/privacypolicy.html`](website/privacypolicy.html))
+* **Entwickler-Kontakt / Support-E-Mail:** `isc@ingoreschke.de`
 * **Data Safety:**
   - Gespeicherte Daten: Letzter Gehaltswert, Prozentsatz und Währungsauswahl (ausschließlich lokal im privaten App-Speicher via `Jetpack DataStore`).
   - Keine Übertragung von Nutzer- oder Gehaltsdaten an externe Server.

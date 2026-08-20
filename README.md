@@ -86,6 +86,6 @@ versionCode = {minSdk}{00}{3 digits Version epic.major.minor}
 ## License & Contact
 
 - **Developer**: Ingo Reschke
-- **Privacy Policy**: [privacypolicy.html](website/privacypolicy.html)
-- **Contact**: `isc [ at ] ingo-reschke.de`
+- **Privacy Policy**: [privacypolicy.html](website/privacypolicy.html) (Live: [apps.ingoreschke.de/increasesalarycalculator/privacy.html](https://apps.ingoreschke.de/increasesalarycalculator/privacy.html))
+- **Contact**: `isc [ at ] ingoreschke.de`
 
